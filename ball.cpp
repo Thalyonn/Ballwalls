@@ -1,22 +1,47 @@
 #include "ball.h"
 #include "QtMath"
+#include "qpainter.h"
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
+    //xPos and yPos are only the initial positions to set
     xPos = pxPos;
     yPos = pyPos;
     speed = pSpeed;
     dir = pDir;
+    radDir = qDegreesToRadians(dir);
 
     setPos(mapToParent(xPos, yPos));
 
 
 }
 
-void Ball::move()
+QRectF Ball::boundingRect() const
 {
-    qreal dx = speed * qCos(dir);
-    qreal dy = speed * qSin(dir);
+    return QRect(xPos,yPos,10,10);
+}
 
+void Ball::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->setBrush(Qt::red);
+    painter->drawEllipse(xPos, yPos, 10, 10);
+    qDebug() << scene();
+}
+
+QPainterPath Ball::shape() const
+{
+    QPainterPath path;
+    path.addEllipse(boundingRect());
+    return path;
+}
+
+void Ball::advance(int phase)
+{
+    if(!phase) return;
+    //Calculate next direction of x and y formula
+    qreal dx = speed * qCos(radDir);
+    qreal dy = speed * qSin(radDir);
+
+    //apply the position to be used in the graphic view
     setPos(mapToParent(dx, dy));
 
 }
