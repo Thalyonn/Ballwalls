@@ -52,3 +52,8 @@ void Ball::changeDir(qreal angle)
     dir = angle;
     radDir = qDegreesToRadians(angle);
 }
+
+
+qreal Ball::getDir() {
+    return dir;
+}

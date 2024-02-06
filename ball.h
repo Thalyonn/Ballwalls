@@ -11,6 +11,9 @@ public:
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape() const override;
+    void changeDir(qreal angle);
+    qreal getDir();
+    QPair<double, double> getXY();
 
 private:
     qreal xPos;

@@ -57,7 +57,7 @@ void MainWindow::on_ballAddBtn_clicked()
 
     qreal xPos = 0;
     qreal yPos = 0;
-    qreal speed = 100;
+    qreal speed = 1;
     qreal direction = 180;
 
     Ball *ball = new Ball(xPos, yPos, speed, direction);
