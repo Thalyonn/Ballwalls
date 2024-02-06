@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ball.h"
-#include "ball.cpp"
 #include "QGraphicsEllipseItem"
 #include "QTimer"
 #include "QPointF"

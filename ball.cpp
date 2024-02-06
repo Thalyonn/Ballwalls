@@ -1,5 +1,6 @@
 #include "ball.h"
 #include "QtMath"
+#include "QDebug"
 #include "qpainter.h"
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
@@ -44,4 +45,10 @@ void Ball::advance(int phase)
     //apply the position to be used in the graphic view
     setPos(mapToParent(dx, dy));
 
+}
+
+void Ball::changeDir(qreal angle)
+{
+    dir = angle;
+    radDir = qDegreesToRadians(angle);
 }
