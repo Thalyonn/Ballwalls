@@ -2,6 +2,7 @@
 #include "QtMath"
 #include "QDebug"
 #include "qpainter.h"
+#include "QPair"
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     //xPos and yPos are only the initial positions to set
@@ -42,6 +43,13 @@ void Ball::advance(int phase)
     qreal dx = speed * qCos(radDir);
     qreal dy = speed * qSin(radDir);
 
+    if (xPos <= -1)
+        dx = -dx;
+
+    if (yPos <= -1)
+        dy = -dy;
+
+
     //apply the position to be used in the graphic view
     setPos(mapToParent(dx, dy));
 
@@ -56,4 +64,8 @@ void Ball::changeDir(qreal angle)
 
 qreal Ball::getDir() {
     return dir;
+}
+
+QPair<double, double> Ball::getXY() {
+    return qMakePair(xPos, yPos);
 }
