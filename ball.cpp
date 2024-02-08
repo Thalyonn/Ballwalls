@@ -3,6 +3,7 @@
 #include "QDebug"
 #include "qpainter.h"
 #include "QPair"
+#include "wall.h"
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     //xPos and yPos are only the initial positions to set
@@ -39,6 +40,16 @@ QPainterPath Ball::shape() const
 void Ball::advance(int phase)
 {
     if(!phase) return;
+
+    QList<QGraphicsItem*> collisions = collidingItems();
+
+    for (QGraphicsItem* item : collisions) {
+        if (typeid(*item) == typeid(Wall)) {
+            //Make it go the other way if it hits something
+            //Proper math for angle of incidence to follow
+            radDir += 3.14;
+        }
+    }
     //Calculate next direction of x and y formula
     qreal dx = speed * qCos(radDir);
     qreal dy = speed * qSin(radDir);
