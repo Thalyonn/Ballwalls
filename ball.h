@@ -13,7 +13,6 @@ public:
     QPainterPath shape() const override;
     void changeDir(qreal angle);
     qreal getDir();
-    QPair<double, double> getXY();
 
 private:
     qreal xPos;
