@@ -22,6 +22,7 @@ public:
 
 private slots:
     void on_ballAddBtn_clicked();
+    void on_wallAddBtn_clicked();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

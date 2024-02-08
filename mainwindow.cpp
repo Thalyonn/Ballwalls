@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "ball.h"
+#include "wall.h"
 #include "QGraphicsEllipseItem"
 #include "QTimer"
 #include "QPointF"
@@ -25,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     //move the ball
     connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
     moveTimer->start(10); //number here notes every millisecond the ball will move
-
-
 
 }
 
@@ -66,5 +65,14 @@ void MainWindow::on_ballAddBtn_clicked()
 
 }
 
+void MainWindow::on_wallAddBtn_clicked() {
+    qreal x1 = -100;
+    qreal y1 = 100;
+    qreal x2 = -100;
+    qreal y2 = -100;
+
+    Wall *wall = new Wall(x1, y1, x2, y2);
+    scene->addItem(wall);
+}
 
 

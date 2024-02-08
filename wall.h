@@ -3,10 +3,11 @@
 
 #include <QGraphicsItem>
 
-class Wall : public QGraphicsItem
+class Wall : public QGraphicsLineItem
 {
 public:
     Wall(qreal x1, qreal y1, qreal x2, qreal y2);
+
 private:
     qreal x1;
     qreal x2;
