@@ -12,13 +12,13 @@ SOURCES += \
     ball.cpp \
     main.cpp \
     mainwindow.cpp \
-    wall.cpp
+    wall.cpp \
     scenewindow.cpp
 
 HEADERS += \
     ball.h \
     mainwindow.h \
-    wall.h
+    wall.h \
     scenewindow.h
 
 FORMS += \
