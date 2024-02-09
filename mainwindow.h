@@ -24,6 +24,7 @@ public:
 
 private slots:
     void on_ballAddBtn_clicked();
+    void updateFPS();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

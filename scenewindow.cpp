@@ -22,6 +22,6 @@ void SceneWindow::calculateFPS()
     if (passedTime > 0) {
         double fps = 1000.0 / passedTime;
         curFPS = fps;
-        qDebug() << "FPS:" << QString::number(fps, 'f', 2);
+        //qDebug() << "current FPS:" << QString::number(fps, 'f', 2);
     }
 }
