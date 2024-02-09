@@ -3,6 +3,7 @@
 #include "QDebug"
 #include "qpainter.h"
 #include "QPair"
+#include <QGraphicsItem>
 #include "wall.h"
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
@@ -48,11 +49,26 @@ void Ball::advance(int phase)
 
     for (QGraphicsItem* item : collisions) {
         if (typeid(*item) == typeid(Wall)) {
+            //Get normals from wall
+            Wall *w = qgraphicsitem_cast<Wall*>(item);
+            qreal wa = w->getAngle();
+            qreal nx = -qSin(wa);
+            qreal ny = qCos(wa);
+
+            //Formula for angle of reflection: R = V - 2(V . N)N
+            //Dot product of velocity and normal
+            qreal dot = vx * nx + vy * ny;
+            vx = vx - 2 * dot * nx;
+            vy = vy - 2 * dot * ny;
+
+            break;
+            /*
             //Make it go the other way if it hits something
             //Proper math for angle of incidence to follow
             radDir += 3.1415926;
             vx = qCos(radDir);
             vy = qSin(radDir);
+            */
         }
     }
     //Calculate next direction of x and y formula

@@ -16,3 +16,12 @@ Wall::Wall(qreal x1pos, qreal y1pos, qreal x2pos, qreal y2pos) {
     QPen pen(Qt::green);
     QGraphicsLineItem::setPen(pen);
 }
+
+qreal Wall::getAngle() {
+    return angle;
+}
+
+
+int Wall::type() const {
+    return Type;
+}

@@ -17,6 +17,8 @@ public:
 private:
     qreal xPos;
     qreal yPos;
+    qreal vx;
+    qreal vy;
     qreal speed;
     qreal dir;
     double radDir;
