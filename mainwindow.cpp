@@ -71,8 +71,10 @@ void MainWindow::on_wallAddBtn_clicked() {
     qreal x2 = -100;
     qreal y2 = -100;
 
-    Wall *wall = new Wall(x1, y1, x2, y2);
+    Wall *wall = new Wall(x1-20, y1, x2, y2);
+    Wall *wall2 = new Wall(x1+400, y1, x2+400, y2-400);
     scene->addItem(wall);
+    scene->addItem(wall2);
 }
 
 
