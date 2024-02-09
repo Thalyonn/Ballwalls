@@ -12,6 +12,9 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     speed = pSpeed;
     dir = pDir;
     radDir = qDegreesToRadians(dir);
+    //Vectors
+    vx = qCos(radDir);
+    vy = qSin(radDir);
 
     setPos(mapToParent(xPos, yPos));
 
@@ -47,12 +50,14 @@ void Ball::advance(int phase)
         if (typeid(*item) == typeid(Wall)) {
             //Make it go the other way if it hits something
             //Proper math for angle of incidence to follow
-            radDir += 3.14;
+            radDir += 3.1415926;
+            vx = qCos(radDir);
+            vy = qSin(radDir);
         }
     }
     //Calculate next direction of x and y formula
-    qreal dx = speed * qCos(radDir);
-    qreal dy = speed * qSin(radDir);
+    qreal dx = speed * vx;
+    qreal dy = speed * vy;
 
 
     //apply the position to be used in the graphic view
