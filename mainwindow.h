@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QTimer>
+#include <QLCDNumber>
+#include "scenewindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,15 +25,19 @@ public:
 private slots:
     void on_ballAddBtn_clicked();
     void on_wallAddBtn_clicked();
+    void updateFPS();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *scene;
+    SceneWindow *scene;
+
     int curFrame; //to keep track of the current frame number
     QTimer *moveTimer;
+    QTimer *fpsTimer;
+    QLCDNumber *fpsLCD;
 
 };
 #endif // MAINWINDOW_H

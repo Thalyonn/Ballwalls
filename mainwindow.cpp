@@ -6,15 +6,18 @@
 #include "QTimer"
 #include "QPointF"
 #include "QPoint"
+#include "QDebug"
+#include "scenewindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    qDebug() << "MINIONS";
     ui->setupUi(this);
 
     //setup scene
-    scene = new QGraphicsScene();
+    scene = new SceneWindow();
     ui->graphicsView->setScene(scene);
 
     //current frame starts at 0
@@ -25,7 +28,20 @@ MainWindow::MainWindow(QWidget *parent)
 
     //move the ball
     connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
+    //calculate frames
+    connect(moveTimer, &QTimer::timeout, scene, &SceneWindow::calculateFPS);
+
     moveTimer->start(10); //number here notes every millisecond the ball will move
+
+    //timer to update fps lcd
+    fpsTimer = new  QTimer (this);
+    connect(fpsTimer, &QTimer::timeout, this, &MainWindow::updateFPS);
+    fpsTimer->start(10);
+    //LCD UI element to display fps on
+    fpsLCD = ui->fpsLCD;
+
+
+
 
 }
 
@@ -40,6 +56,13 @@ void MainWindow::paintEvent(QPaintEvent *event)
     // Increment frame count
     ++curFrame;
     // Your painting code goes here
+}
+
+void MainWindow::updateFPS()
+{
+    //qDebug() << "UPDATING FPS";
+    int fps = scene->getFPS();
+    fpsLCD->display(fps);
 }
 
 void MainWindow::on_ballAddBtn_clicked()

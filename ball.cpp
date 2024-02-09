@@ -41,6 +41,8 @@ QPainterPath Ball::shape() const
     return path;
 }
 
+
+
 void Ball::advance(int phase)
 {
     if(!phase) return;
