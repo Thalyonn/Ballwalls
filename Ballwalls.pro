@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     ball.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    scenewindow.cpp
 
 HEADERS += \
     ball.h \
-    mainwindow.h
+    mainwindow.h \
+    scenewindow.h
 
 FORMS += \
     mainwindow.ui
