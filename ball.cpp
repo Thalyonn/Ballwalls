@@ -17,7 +17,8 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     vx = qCos(radDir);
     vy = qSin(radDir);
 
-    setPos(mapToParent(xPos, yPos));
+    qDebug() << "Ball spawned at " << double(xPos) <<  " and " << QString::number(yPos);
+    //setPos(mapToParent(xPos, yPos));
 
 
 }
@@ -31,7 +32,7 @@ void Ball::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 {
     painter->setBrush(Qt::red);
     painter->drawEllipse(xPos, yPos, 10, 10);
-    qDebug() << scene();
+    //qDebug() << scene();
 }
 
 QPainterPath Ball::shape() const
@@ -79,7 +80,7 @@ void Ball::advance(int phase)
 
 
     //apply the position to be used in the graphic view
-    qDebug() << "Ball at coords " << QString::number(dx) <<  " and " << QString::number(dy);
+    //qDebug() << "Ball at coords " << vx <<  " and " << vy;
     setPos(mapToParent(dx, dy));
 
 }

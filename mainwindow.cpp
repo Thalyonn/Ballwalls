@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     //-2 allows for space on the wall
     qtTransform.translate(0, ui->graphicsView->height());
     //zoomout scene note: this is just so i can see the bounding box
+    //y axis is inverted in qt so have to make it negative
     qtTransform.scale(0.5, -0.5);
     ui->graphicsView->setTransform(qtTransform);
 
@@ -102,7 +103,7 @@ void MainWindow::on_ballAddBtn_clicked()
     scene->addItem(ball);
     ui->graphicsView->setScene(scene);*/
 
-    qreal xPos = 0;
+    qreal xPos = 1280;
     qreal yPos = 0;
     qreal speed = 5;
     qreal direction = 270;
