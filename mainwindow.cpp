@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    //lock screen to this size
+    this->setFixedSize(1550,740);
     qDebug() << "MINIONS";
     ui->setupUi(this);
 
