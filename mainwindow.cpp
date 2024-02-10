@@ -59,10 +59,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setTransform(qtTransform);
 
 
-    Wall *downWall = new Wall(-1, -1, 1281, -1);
-    Wall *rightWall = new Wall(1281, -1, 1281, 721);
-    Wall *upWall  = new Wall(-1, 721, 1281, 721);
-    Wall *leftWall = new Wall(-1, -1, -1, 721);
+    Wall *downWall = new Wall(-11, -11, 1291, -11);
+    Wall *rightWall = new Wall(1291, -11, 1291, 731);
+    Wall *upWall  = new Wall(-11, 731, 1291, 731);
+    Wall *leftWall = new Wall(-11, -11, -11, 731);
     scene->addItem(leftWall);
     scene->addItem(downWall);
     scene->addItem(upWall);
