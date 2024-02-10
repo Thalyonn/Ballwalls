@@ -81,7 +81,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>80</y>
+        <y>70</y>
         <width>91</width>
         <height>24</height>
        </rect>
@@ -97,8 +97,8 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>120</y>
-        <width>91</width>
+        <y>100</y>
+        <width>111</width>
         <height>24</height>
        </rect>
       </property>
@@ -107,6 +107,22 @@
       </property>
       <property name="maximum">
        <number>500</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="ballAngle">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>130</y>
+        <width>111</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="prefix">
+       <string>Angle: </string>
+      </property>
+      <property name="maximum">
+       <number>360</number>
       </property>
      </widget>
     </widget>

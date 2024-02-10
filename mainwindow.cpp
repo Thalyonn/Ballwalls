@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qmath.h"
 #include "ui_mainwindow.h"
 #include "ball.h"
 #include "wall.h"
@@ -103,10 +104,10 @@ void MainWindow::on_ballAddBtn_clicked()
     scene->addItem(ball);
     ui->graphicsView->setScene(scene);*/
 
-    qreal xPos = 1280;
-    qreal yPos = 0;
-    qreal speed = 5;
-    qreal direction = 270;
+    qreal xPos = ui->ballX->cleanText().toInt();
+    qreal yPos = ui->ballY->cleanText().toInt();
+    qreal speed = ui->ballSpeed->cleanText().toInt();
+    qreal direction = ui->ballAngle->cleanText().toInt();
 
     Ball *ball = new Ball(xPos, yPos, speed, direction);
     scene->addItem(ball);
@@ -115,15 +116,13 @@ void MainWindow::on_ballAddBtn_clicked()
 }
 
 void MainWindow::on_wallAddBtn_clicked() {
-    qreal x1 = -100;
-    qreal y1 = 100;
-    qreal x2 = -100;
-    qreal y2 = -100;
+    qreal x1 = ui->wallX1->cleanText().toInt();
+    qreal y1 = ui->wallY1->cleanText().toInt();
+    qreal x2 = ui->wallX2->cleanText().toInt();
+    qreal y2 = ui->wallY2->cleanText().toInt();
 
-    Wall *wall = new Wall(x1-20, y1, x2, y2);
-    Wall *wall2 = new Wall(x1+400, y1, x2+400, y2-400);
+    Wall *wall = new Wall(x1, y1, x2, y2);
     scene->addItem(wall);
-    scene->addItem(wall2);
 }
 
 
