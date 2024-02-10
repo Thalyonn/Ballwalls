@@ -61,6 +61,45 @@
        <string>Add</string>
       </property>
      </widget>
+     <widget class="QLineEdit" name="ballX">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>113</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>X location</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="ballY">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>113</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>Y location</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="ballSpeed">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>113</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="placeholderText">
+       <string>Speed</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="geometry">
@@ -119,7 +158,7 @@
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
