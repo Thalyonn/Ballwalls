@@ -79,6 +79,7 @@ void Ball::advance(int phase)
 
 
     //apply the position to be used in the graphic view
+    qDebug() << "Ball at coords " << QString::number(dx) <<  " and " << QString::number(dy);
     setPos(mapToParent(dx, dy));
 
 }

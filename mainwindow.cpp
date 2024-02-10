@@ -42,8 +42,31 @@ MainWindow::MainWindow(QWidget *parent)
     //LCD UI element to display fps on
     fpsLCD = ui->fpsLCD;
 
+    //move camera so that 0 x 0 is on bottom left
+    ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed); //fix size
+    ui->graphicsView->setFixedSize(1282, 722);
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing, true);
+
+    ui->graphicsView->setSceneRect(0, 0, 1282, 722); //set scene rectangle
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    QTransform qtTransform;\
+    //-2 allows for space on the wall
+    qtTransform.translate(0, ui->graphicsView->height());
+    //zoomout scene note: this is just so i can see the bounding box
+    qtTransform.scale(0.5, -0.5);
+    ui->graphicsView->setTransform(qtTransform);
 
 
+    Wall *downWall = new Wall(-1, -1, 1281, -1);
+    Wall *rightWall = new Wall(1281, -1, 1281, 721);
+    Wall *upWall  = new Wall(-1, 721, 1281, 721);
+    Wall *leftWall = new Wall(-1, -1, -1, 721);
+    scene->addItem(leftWall);
+    scene->addItem(downWall);
+    scene->addItem(upWall);
+    scene->addItem(rightWall);
+    //scene->addItem(wall2);
 
 }
 
@@ -81,8 +104,8 @@ void MainWindow::on_ballAddBtn_clicked()
 
     qreal xPos = 0;
     qreal yPos = 0;
-    qreal speed = 10;
-    qreal direction = 180;
+    qreal speed = 5;
+    qreal direction = 270;
 
     Ball *ball = new Ball(xPos, yPos, speed, direction);
     scene->addItem(ball);
