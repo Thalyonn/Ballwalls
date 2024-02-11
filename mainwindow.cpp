@@ -148,3 +148,44 @@ void MainWindow::on_b1_addBtn_clicked()
     }
 }
 
+//Batch operation 2: Add balls between two angles
+void MainWindow::on_b2_addBtn_clicked()
+{
+    int count = ui->b2_count->cleanText().toInt();
+
+    qreal speed = ui->b2_speed->cleanText().toInt();
+    qreal angle1 = ui->b2_angle1->cleanText().toInt();
+    qreal angle2 = ui->b2_angle2->cleanText().toInt();
+    qreal x = ui->b2_x->cleanText().toInt();
+    qreal y = ui->b2_y->cleanText().toInt();
+
+    for (int i = 0; i<count;i++) {
+        float dist = i*1.0 / (count - 1);
+        qreal angle = angle1 + dist * (angle2-angle1);
+
+        Ball *ball = new Ball(x, y, speed, angle);
+        scene->addItem(ball);
+    }
+}
+
+//Batch operation 3: Add balls between speeds
+void MainWindow::on_b3_addBtn_clicked()
+{
+
+    int count = ui->b3_count->cleanText().toInt();
+
+    qreal speed1 = ui->b3_speed1->cleanText().toInt();
+    qreal speed2 = ui->b3_speed2->cleanText().toInt();
+    qreal angle = ui->b3_angle->cleanText().toInt();
+    qreal x = ui->b3_x->cleanText().toInt();
+    qreal y = ui->b3_y->cleanText().toInt();
+
+    for (int i = 0; i<count;i++) {
+        float dist = i*1.0 / (count - 1);
+        qreal speed = speed1 + dist * (speed2-speed1);
+
+        Ball *ball = new Ball(x, y, speed, angle);
+        scene->addItem(ball);
+    }
+}
+

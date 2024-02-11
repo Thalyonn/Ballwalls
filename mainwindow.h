@@ -29,6 +29,10 @@ private slots:
 
     void on_b1_addBtn_clicked();
 
+    void on_b2_addBtn_clicked();
+
+    void on_b3_addBtn_clicked();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 
