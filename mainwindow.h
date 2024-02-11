@@ -27,6 +27,8 @@ private slots:
     void on_wallAddBtn_clicked();
     void updateFPS();
 
+    void on_b1_addBtn_clicked();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 

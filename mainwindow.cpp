@@ -126,3 +126,25 @@ void MainWindow::on_wallAddBtn_clicked() {
 }
 
 
+//Batch operation 1: Add balls along a line
+void MainWindow::on_b1_addBtn_clicked()
+{
+    int count = ui->b1_count->cleanText().toInt();
+
+    qreal speed = ui->b1_speed->cleanText().toInt();
+    qreal angle = ui->b1_angle->cleanText().toInt();
+    qreal x1 = ui->b1_x1->cleanText().toInt();
+    qreal y1 = ui->b1_y1->cleanText().toInt();
+    qreal x2 = ui->b1_x2->cleanText().toInt();
+    qreal y2 = ui->b1_y2->cleanText().toInt();
+
+    for (int i = 0; i<count;i++) {
+        float dist = i*1.0 / (count - 1);
+        qreal ball_x = x1 + (dist * (x2 - x1));
+        qreal ball_y = y1 + (dist * (y2 - y1));
+
+        Ball *ball = new Ball(ball_x, ball_y, speed, angle);
+        scene->addItem(ball);
+    }
+}
+

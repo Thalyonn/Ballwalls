@@ -49,7 +49,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabSingle">
       <attribute name="title">
@@ -253,13 +253,29 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>170</y>
+         <y>190</y>
          <width>111</width>
          <height>31</height>
         </rect>
        </property>
        <property name="text">
         <string>Add</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b1_angle">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>111</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Angle: </string>
+       </property>
+       <property name="maximum">
+        <number>359</number>
        </property>
       </widget>
      </widget>
