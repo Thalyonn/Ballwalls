@@ -54,60 +54,62 @@ void Ball::advance(int phase)
     class HelloWorldTask : public QRunnable
     {
         public:
-        HelloWorldTask(qreal someVx, qreal someVy, qreal someSpeed) : vx(someVx), vy(someVy), speed(someSpeed) { }
+        HelloWorldTask(Ball* someBall, qreal someVx, qreal someVy, qreal someSpeed) : ball(someBall) ,vx(someVx), vy(someVy), speed(someSpeed) { }
 
         void run() override
         {
+
             qDebug() << "Ball from thread" << QThread::currentThread();
             qDebug() << "Variable vx" << vx;
-        }
+            QList<QGraphicsItem*> collisions = ball->collidingItems();
 
-        private:
-            qreal vx;
-            qreal vy;
-            qreal speed;
+            for (QGraphicsItem* item : collisions) {
+                if (typeid(*item) == typeid(Wall)) {
+                    //Get normals from wall
+                    Wall *w = qgraphicsitem_cast<Wall*>(item);
+                    qreal wa = w->getAngle();
+                    qreal nx = -qSin(wa);
+                    qreal ny = qCos(wa);
 
-    };
+                    //Formula for angle of reflection: R = V - 2(V . N)N
+                    //Dot product of velocity and normal
+                    qreal dot = vx * nx + vy * ny;
+                    vx = vx - 2 * dot * nx;
+                    vy = vy - 2 * dot * ny;
 
-
-    HelloWorldTask *hello = new HelloWorldTask(vx, vy, speed);
-    // QThreadPool takes ownership and deletes 'hello' automatically
-    QThreadPool::globalInstance()->start(hello);
-
-    QList<QGraphicsItem*> collisions = collidingItems();
-
-    for (QGraphicsItem* item : collisions) {
-        if (typeid(*item) == typeid(Wall)) {
-            //Get normals from wall
-            Wall *w = qgraphicsitem_cast<Wall*>(item);
-            qreal wa = w->getAngle();
-            qreal nx = -qSin(wa);
-            qreal ny = qCos(wa);
-
-            //Formula for angle of reflection: R = V - 2(V . N)N
-            //Dot product of velocity and normal
-            qreal dot = vx * nx + vy * ny;
-            vx = vx - 2 * dot * nx;
-            vy = vy - 2 * dot * ny;
-
-            break;
-            /*
+                    break;
+                    /*
             //Make it go the other way if it hits something
             //Proper math for angle of incidence to follow
             radDir += 3.1415926;
             vx = qCos(radDir);
             vy = qSin(radDir);
             */
+                }
+            }
+            //Calculate next direction of x and y formula
+            qreal dx = speed * vx;
+            qreal dy = speed * vy;
+
+
+            //apply the position to be used in the graphic view
+            //qDebug() << "Ball at coords " << vx <<  " and " << vy;
+            ball->setPos(ball->mapToParent(dx, dy));
         }
-    }
-    //Calculate next direction of x and y formula
-    qreal dx = speed * vx;
-    qreal dy = speed * vy;
+
+        private:
+            qreal vx;
+            qreal vy;
+            qreal speed;
+            Ball* ball;
+
+    };
 
 
-    //apply the position to be used in the graphic view
-    //qDebug() << "Ball at coords " << vx <<  " and " << vy;
-    setPos(mapToParent(dx, dy));
+    HelloWorldTask *hello = new HelloWorldTask(this, vx, vy, speed);
+    // QThreadPool takes ownership and deletes 'hello' automatically
+    QThreadPool::globalInstance()->start(hello);
+
 
 }
 
