@@ -5,6 +5,9 @@
 #include "QPair"
 #include <QGraphicsItem>
 #include "wall.h"
+#include "QRunnable"
+#include "qthread.h"
+#include "QThreadPool"
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     //xPos and yPos are only the initial positions to set
@@ -47,6 +50,29 @@ QPainterPath Ball::shape() const
 void Ball::advance(int phase)
 {
     if(!phase) return;
+
+    class HelloWorldTask : public QRunnable
+    {
+        public:
+        HelloWorldTask(qreal someVx, qreal someVy, qreal someSpeed) : vx(someVx), vy(someVy), speed(someSpeed) { }
+
+        void run() override
+        {
+            qDebug() << "Ball from thread" << QThread::currentThread();
+            qDebug() << "Variable vx" << vx;
+        }
+
+        private:
+            qreal vx;
+            qreal vy;
+            qreal speed;
+
+    };
+
+
+    HelloWorldTask *hello = new HelloWorldTask(vx, vy, speed);
+    // QThreadPool takes ownership and deletes 'hello' automatically
+    QThreadPool::globalInstance()->start(hello);
 
     QList<QGraphicsItem*> collisions = collidingItems();
 

@@ -9,6 +9,9 @@
 #include "QPoint"
 #include "QDebug"
 #include "scenewindow.h"
+#include "QRunnable"
+#include "qthread.h"
+#include "QThreadPool"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -112,6 +115,18 @@ void MainWindow::on_ballAddBtn_clicked()
     Ball *ball = new Ball(xPos, yPos, speed, direction);
     scene->addItem(ball);
 
+    class HelloWorldTask : public QRunnable
+    {
+        void run() override
+        {
+            qDebug() << "Hello world from thread" << QThread::currentThread();
+        }
+    };
+
+
+    HelloWorldTask *hello = new HelloWorldTask();
+    // QThreadPool takes ownership and deletes 'hello' automatically
+    QThreadPool::globalInstance()->start(hello);
 
 }
 
@@ -188,4 +203,6 @@ void MainWindow::on_b3_addBtn_clicked()
         scene->addItem(ball);
     }
 }
+
+
 
