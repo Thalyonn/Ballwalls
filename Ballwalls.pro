@@ -14,14 +14,16 @@ SOURCES += \
     mainwindow.cpp \
     myrunnable.cpp \
     wall.cpp \
-    scenewindow.cpp
+    scenewindow.cpp \
+    worker.cpp
 
 HEADERS += \
     ball.h \
     mainwindow.h \
     myrunnable.h \
     wall.h \
-    scenewindow.h
+    scenewindow.h \
+    worker.h
 
 FORMS += \
     mainwindow.ui
