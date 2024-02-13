@@ -48,6 +48,6 @@ void Worker::run()
     qreal dy = ball->speed * ball->vy;
 
     //send back a signal containing dx, dy, the ball pointer, and the worker
-    emit finished(dx, dy, ball, this);
+    emit completed(dx, dy, ball, this);
 
 }

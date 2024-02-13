@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QLCDNumber>
 #include "scenewindow.h"
+#include "worker.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -33,6 +34,10 @@ private slots:
 
     void on_b3_addBtn_clicked();
 
+    void moveAll();
+
+    void updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker);
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 
@@ -44,6 +49,10 @@ private:
     QTimer *moveTimer;
     QTimer *fpsTimer;
     QLCDNumber *fpsLCD;
+    QThreadPool threadPool;
+
+
+    QVector<Worker*> workers;
 
 };
 #endif // MAINWINDOW_H

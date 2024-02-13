@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QTime>
+#include <QThreadPool>
 
 class SceneWindow : public QGraphicsScene
 {

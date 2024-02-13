@@ -25,7 +25,7 @@ private:
     bool isRunning;
 
 signals:
-    void finished(qreal dx, qreal dy, Ball *ball, Worker *worker);
+    void completed(qreal dx, qreal dy, Ball *ball, Worker *worker);
 
 
 

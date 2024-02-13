@@ -34,14 +34,19 @@ MainWindow::MainWindow(QWidget *parent)
     moveTimer = new QTimer(this);
 
     //new code
-    QThreadPool threadPool;
+
     threadPool.setMaxThreadCount(4); //set to 4 for testing
 
 
 
+
     //move the ball
-    connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
+    //connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
+
+    //connect timer to moveall so moveAll gets called in intervals
+    connect(moveTimer, &QTimer::timeout, this, &MainWindow::moveAll);
     //calculate frames
+
     connect(moveTimer, &QTimer::timeout, scene, &SceneWindow::calculateFPS);
 
     moveTimer->start(10); //number here notes every millisecond the ball will move
@@ -102,6 +107,24 @@ void MainWindow::updateFPS()
     fpsLCD->display(fps);
 }
 
+void MainWindow::moveAll()
+{
+    qDebug() << "Workers : " << workers.size();
+    //iterate through all workers since each contains a ball
+    for(int i = 0; i < workers.size(); i++)
+    {
+        qDebug() << "Current Worker : " << workers[i];
+        threadPool.start(workers[i]);
+        //update positions everytime a worker finishes calculating
+        connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
+    }
+    //threadPool.start(&worker);
+}
+
+void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
+{
+    worker->ball->setPos(dx, dy);
+}
 void MainWindow::on_ballAddBtn_clicked()
 {
     /*
@@ -120,20 +143,12 @@ void MainWindow::on_ballAddBtn_clicked()
     qreal direction = ui->ballAngle->cleanText().toInt();
 
     Ball *ball = new Ball(xPos, yPos, speed, direction);
+    //create a worker and attatch ball to worker then append it to worker list
+    Worker *worker = new Worker(this, ball);
+    workers.append(worker);
+    //add ball to scene
     scene->addItem(ball);
 
-    class HelloWorldTask : public QRunnable
-    {
-        void run() override
-        {
-            qDebug() << "Hello world from thread" << QThread::currentThread();
-        }
-    };
-
-
-    HelloWorldTask *hello = new HelloWorldTask();
-    // QThreadPool takes ownership and deletes 'hello' automatically
-    QThreadPool::globalInstance()->start(hello);
 
 }
 
