@@ -12,6 +12,7 @@
 #include "QRunnable"
 #include "qthread.h"
 #include "QThreadPool"
+#include "worker.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,6 +32,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     //we need a timer for the moving objects
     moveTimer = new QTimer(this);
+
+    //new code
+    QThreadPool threadPool;
+    threadPool.setMaxThreadCount(4); //set to 4 for testing
+
+
 
     //move the ball
     connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
