@@ -141,6 +141,10 @@ void MainWindow::manageWorkers()
             workThread = thread;
             workers[i]->moveToThread(workThread);
             connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
+            if(!workThread->isRunning())
+            {
+                workThread->start();
+            }
         }
 
 
