@@ -16,6 +16,7 @@ signals:
 
 public slots:
     void start();
+    void compute();
 
 protected:
     virtual void run();

@@ -131,6 +131,7 @@ void MainWindow::moveAll()
 
 void MainWindow::manageWorkers()
 {
+    qDebug() << "size  workers" << workers.size();
     for(int i = 0; i < workers.size(); i++)
     {
         qDebug() << "Managing workers";
@@ -140,10 +141,14 @@ void MainWindow::manageWorkers()
             QThread *thread = threadPool.dequeue();
             workThread = thread;
             workers[i]->moveToThread(workThread);
+            QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::QueuedConnection);
             connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
             if(!workThread->isRunning())
             {
+
                 workThread->start();
+
+
             }
         }
 
@@ -154,7 +159,7 @@ void MainWindow::manageWorkers()
 void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
 {
     qDebug() << "UPDATING POSITIONS";
-    //ball->setPos(ball->mapToParent(dx, dy));
+    worker->ball->setPos(ball->mapToParent(dx, dy));
 }
 void MainWindow::on_ballAddBtn_clicked()
 {
