@@ -86,8 +86,13 @@ void Ball::advance(int phase)
 
     //apply the position to be used in the graphic view
     //qDebug() << "Ball at coords " << vx <<  " and " << vy;
-    setPos(mapToParent(dx, dy));
+    xPos = xPos + dx;
+    yPos = yPos + dy;
 
+}
+
+void Ball::render() {
+    setPos(xPos, yPos);
 }
 
 void Ball::changeDir(qreal angle)
