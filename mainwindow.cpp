@@ -132,7 +132,7 @@ void MainWindow::moveAll()
 void MainWindow::manageWorkers()
 {
     qDebug() << "size  workers" << workers.size();
-    for(int i = 0; i < workers.size(); i++)
+    for(int i = workers.size() - 1; i < workers.size(); i++)
     {
         qDebug() << "Managing workers";
         if(threadPool.isEmpty() == false)
