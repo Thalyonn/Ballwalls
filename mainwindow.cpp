@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setSceneRect(0, 0, 1282, 722); //set scene rectangle
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    QTransform qtTransform;\
+    QTransform qtTransform;
     //-2 allows for space on the wall
     qtTransform.translate(0, ui->graphicsView->height());
     //zoomout scene note: this is just so i can see the bounding box
@@ -94,6 +94,11 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(rightWall);
     //scene->addItem(wall2);
 
+    //Create workers
+    for (int i = 0; i < threadCount; i++) {
+        Worker *w = new Worker();
+        workers.append(w);
+    }
 }
 
 
@@ -190,7 +195,6 @@ void MainWindow::on_ballAddBtn_clicked()
     qreal speed = ui->ballSpeed->cleanText().toInt();
     qreal direction = ui->ballAngle->cleanText().toInt();
 
-    //create a worker and attatch ball to worker then append it to worker list
     addBall(xPos, yPos, speed, direction);
 
 }

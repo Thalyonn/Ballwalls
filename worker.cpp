@@ -28,7 +28,7 @@ void Worker::compute() {
         ball->updatePosition();
     }
 
-    //send back a signal containing dx, dy, the ball pointer, and the worker
+    //Emit a done signal
     emit done(true);
 }
 
