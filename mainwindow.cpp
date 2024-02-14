@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //threadPool.setMaxThreadCount(4); //set to 4 for testing
 
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < threadCount; i++)
     {
         //note: if balls stop moving is cause i haven't queued back the thread
         QThread *thread = new QThread(this);
