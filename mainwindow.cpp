@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     for(int i = 0; i < 5; i++)
     {
+        //note: if balls stop moving is cause i haven't queued back the thread
         QThread *thread = new QThread(this);
         threadPool.enqueue(thread);
 
