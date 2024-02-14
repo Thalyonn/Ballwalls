@@ -18,7 +18,7 @@ void Worker::start() {
 }
 
 void Worker::addBall(Ball* ballToAdd) {
-    qDebug() << "Added ball to this worker with speed " << ballToAdd->speed;
+    //qDebug() << "Added ball to this worker with speed " << ballToAdd->speed;
     balls.append(ballToAdd);
 }
 
@@ -26,7 +26,7 @@ void Worker::compute() {
     if (balls.size() == 0) {
         return;
     }
-    qDebug() << "Computing" ;
+    //qDebug() << "Computing" ;
 
     for (Ball* ball : balls) {
         ball->updatePosition();

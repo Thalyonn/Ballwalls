@@ -125,11 +125,11 @@ void MainWindow::updateFPS()
 
 void MainWindow::moveAll()
 {
-    qDebug() << "Workers : " << workers.size();
+    //qDebug() << "Workers : " << workers.size();
     //iterate through all workers since each contains a ball
     for(int i = 0; i < workers.size(); i++)
     {
-        qDebug() << "Current Worker : " << workers[i];
+        //qDebug() << "Current Worker : " << workers[i];
 
         //threadPool.start(workers[i]);
 
@@ -141,13 +141,13 @@ void MainWindow::moveAll()
 
 void MainWindow::manageWorkers()
 {
-    qDebug() << "size  workers" << workers.size();
+    //qDebug() << "size  workers" << workers.size();
     for(int i = 0; i < workers.size(); i++)
     {
-        qDebug() << "Managing workers";
+        //qDebug() << "Managing workers";
         if(threadPool.isEmpty() == false)
         {
-            qDebug() << "Managing worker number: " << i;
+            //qDebug() << "Managing worker number: " << i;
             QThread *thread = threadPool.dequeue();
             workThread = thread;
             workers[i]->moveToThread(workThread);
@@ -169,7 +169,7 @@ void MainWindow::manageWorkers()
 
 //Kind of a copy of updatePositions()? Clean up na lang later
 void MainWindow::manageRenderThread() {
-    qDebug() << "UPDATING POSITIONS";
+    //qDebug() << "UPDATING POSITIONS";
     for (Ball *ball : balls) {
         ball->render();
     }
@@ -177,7 +177,7 @@ void MainWindow::manageRenderThread() {
 
 void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
 {
-    qDebug() << "UPDATING POSITIONS";
+    //qDebug() << "UPDATING POSITIONS";
     //worker->ball->setPos(ball->mapToParent(dx, dy));
 }
 
@@ -190,7 +190,7 @@ void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     scene->addItem(ball);
     //emit sendBall(ball);
     workers[current]->addBall(ball);
-    qDebug() << "Added a ball to thread " << current;
+    //qDebug() << "Added a ball to thread " << current;
     current += 1;
     current %= threadCount;
 }

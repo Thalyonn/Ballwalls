@@ -20,7 +20,7 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     vx = qCos(radDir);
     vy = qSin(radDir);
 
-    qDebug() << "Ball spawned at " << double(xPos) <<  " and " << QString::number(yPos);
+    //qDebug() << "Ball spawned at " << double(xPos) <<  " and " << QString::number(yPos);
     //setPos(mapToParent(xPos, yPos));
 
 
@@ -131,7 +131,7 @@ void Ball::updatePosition() {
 }
 
 void Ball::render() {
-    qDebug() << "im rendering :)";
+    //qDebug() << "im rendering :)";
     setPos(xPos, yPos);
 }
 
