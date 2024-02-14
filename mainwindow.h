@@ -41,6 +41,7 @@ private slots:
 
     void addBall(qreal x, qreal y, qreal dir, qreal angle);
     void manageWorkers();
+    void manageRenderThread();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

@@ -29,7 +29,7 @@ private:
 
 signals:
     void completed(qreal dx, qreal dy, Ball *ball, Worker *worker);
-    void done(bool flag);
+    void done();
 
 
 };

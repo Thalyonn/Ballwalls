@@ -1,6 +1,7 @@
 #include "worker.h"
 #include "wall.h"
 #include "QDebug"
+#include "qmath.h"
 Worker::Worker(Ball *pBall, QObject* parent) : QObject{parent} {
     //this->moveToThread(&this->workerThread);
     //this->workerThread.start();
@@ -29,7 +30,7 @@ void Worker::compute() {
     }
 
     //Emit a done signal
-    emit done(true);
+    emit done();
 }
 
 void Worker::run()

@@ -151,6 +151,7 @@ void MainWindow::manageWorkers()
             workers[i]->moveToThread(workThread);
             QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::QueuedConnection);
             //connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
+            connect(workers[i], &Worker::done, this, &MainWindow::manageRenderThread);
             if(!workThread->isRunning())
             {
 
@@ -164,6 +165,14 @@ void MainWindow::manageWorkers()
     }
 }
 
+//Kind of a copy of updatePositions()? Clean up na lang later
+void MainWindow::manageRenderThread() {
+    qDebug() << "UPDATING POSITIONS";
+    for (Ball *ball : balls) {
+        ball->render();
+    }
+}
+
 void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
 {
     qDebug() << "UPDATING POSITIONS";
@@ -174,6 +183,7 @@ void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     //Distribute it to a thread
     Ball *ball = new Ball(x, y, speed, dir);
     workers[current]->balls.append(ball);
+    scene->addItem(ball);
     current += 1;
     current %= threadCount;
 }
