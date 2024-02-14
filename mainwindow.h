@@ -46,6 +46,9 @@ private slots:
 protected:
     void paintEvent(QPaintEvent *event) override;
 
+signals:
+    void sendBall(Ball* ball);
+
 private:
     Ui::MainWindow *ui;
     SceneWindow *scene;

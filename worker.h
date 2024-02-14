@@ -9,10 +9,9 @@ class Worker : public QObject
 {
     Q_OBJECT
 public:
-    explicit Worker(Ball *ball, QObject* parent = nullptr);
-    Worker(QObject* parent = nullptr);
+    explicit Worker(QObject* parent = nullptr);
     QVector<Ball*> balls;
-    Ball *ball;
+    void addBall(Ball* ballToAdd);
 signals:
     void finished(Worker* worker);
 
@@ -30,7 +29,6 @@ private:
 signals:
     void completed(qreal dx, qreal dy, Ball *ball, Worker *worker);
     void done();
-
 
 };
 

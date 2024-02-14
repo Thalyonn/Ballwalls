@@ -99,6 +99,8 @@ MainWindow::MainWindow(QWidget *parent)
         Worker *w = new Worker();
         workers.append(w);
     }
+
+    manageWorkers();
 }
 
 
@@ -176,14 +178,17 @@ void MainWindow::manageRenderThread() {
 void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
 {
     qDebug() << "UPDATING POSITIONS";
-    worker->ball->setPos(ball->mapToParent(dx, dy));
+    //worker->ball->setPos(ball->mapToParent(dx, dy));
 }
 
 void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     //Distribute it to a thread
     Ball *ball = new Ball(x, y, speed, dir);
-    workers[current]->balls.append(ball);
+    connect(this, &MainWindow::sendBall, workers[current], &Worker::addBall);
+    //workers[current]->balls.append(ball);
     scene->addItem(ball);
+    emit sendBall(ball);
+    qDebug() << "Added a ball to thread " << current;
     current += 1;
     current %= threadCount;
 }

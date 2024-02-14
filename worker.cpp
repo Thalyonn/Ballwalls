@@ -2,15 +2,10 @@
 #include "wall.h"
 #include "QDebug"
 #include "qmath.h"
-Worker::Worker(Ball *pBall, QObject* parent) : QObject{parent} {
-    //this->moveToThread(&this->workerThread);
-    //this->workerThread.start();
-    ball = pBall;
-    this->isRunning = false;
-}
 Worker::Worker(QObject* parent) : QObject{parent} {
     //this->moveToThread(&this->workerThread);
     //this->workerThread.start();
+    //ball = pBall;
     this->isRunning = false;
 }
 
@@ -22,7 +17,15 @@ void Worker::start() {
     }
 }
 
+void Worker::addBall(Ball* ballToAdd) {
+    qDebug() << "Added ball to this worker";
+    balls.append(ballToAdd);
+}
+
 void Worker::compute() {
+    if (balls.size() == 0) {
+        return;
+    }
     qDebug() << "Computing" ;
 
     for (Ball* ball : balls) {
@@ -35,6 +38,7 @@ void Worker::compute() {
 
 void Worker::run()
 {
+    /*
     qDebug() << "Running" ;
     //this is the code that used to be in advance
     QList<QGraphicsItem*> collisions = ball->collidingItems();
@@ -60,7 +64,7 @@ void Worker::run()
             radDir += 3.1415926;
             vx = qCos(radDir);
             vy = qSin(radDir);
-            */
+
         }
     }
     //Calculate next direction of x and y formula
@@ -71,5 +75,5 @@ void Worker::run()
 
     //send back a signal containing dx, dy, the ball pointer, and the worker
     emit completed(dx, dy, ball, this);
-
+    */
 }
