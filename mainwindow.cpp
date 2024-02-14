@@ -186,6 +186,7 @@ void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     Ball *ball = new Ball(x, y, speed, dir);
     connect(this, &MainWindow::sendBall, workers[current], &Worker::addBall);
     //workers[current]->balls.append(ball);
+    balls.append(ball);
     scene->addItem(ball);
     emit sendBall(ball);
     qDebug() << "Added a ball to thread " << current;
