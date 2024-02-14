@@ -16,6 +16,7 @@ public:
     qreal vx;
     qreal vy;
     qreal speed;
+    void updatePosition();
     void render();
 
 private:

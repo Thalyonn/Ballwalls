@@ -39,6 +39,7 @@ private slots:
 
     void updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker);
 
+    void addBall(qreal x, qreal y, qreal dir, qreal angle);
     void manageWorkers();
 
 protected:
@@ -49,11 +50,14 @@ private:
     SceneWindow *scene;
 
     int curFrame; //to keep track of the current frame number
+    int current;
+    int threadCount;
     QTimer *moveTimer;
     QTimer *fpsTimer;
     QLCDNumber *fpsLCD;
     QQueue<QThread*> threadPool;
     QThread *workThread;
+    QVector<Ball*> balls;
 
 
     QVector<Worker*> workers;

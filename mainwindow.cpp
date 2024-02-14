@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     //current frame starts at 0
     curFrame = 0;
+    current = 0; //Used for thread ball distribution later
+    threadCount = 8;
 
     //we need a timer for the moving objects
     moveTimer = new QTimer(this);
@@ -143,7 +145,7 @@ void MainWindow::manageWorkers()
             workThread = thread;
             workers[i]->moveToThread(workThread);
             QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::QueuedConnection);
-            connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
+            //connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
             if(!workThread->isRunning())
             {
 
@@ -162,6 +164,15 @@ void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
     qDebug() << "UPDATING POSITIONS";
     worker->ball->setPos(ball->mapToParent(dx, dy));
 }
+
+void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
+    //Distribute it to a thread
+    Ball *ball = new Ball(x, y, speed, dir);
+    workers[current]->balls.append(ball);
+    current += 1;
+    current %= threadCount;
+}
+
 void MainWindow::on_ballAddBtn_clicked()
 {
     /*
@@ -179,14 +190,8 @@ void MainWindow::on_ballAddBtn_clicked()
     qreal speed = ui->ballSpeed->cleanText().toInt();
     qreal direction = ui->ballAngle->cleanText().toInt();
 
-    Ball *ball = new Ball(xPos, yPos, speed, direction);
     //create a worker and attatch ball to worker then append it to worker list
-    Worker *worker = new Worker(ball);
-    workers.append(worker);
-    manageWorkers();
-    //add ball to scene
-    scene->addItem(ball);
-
+    addBall(xPos, yPos, speed, direction);
 
 }
 
@@ -220,8 +225,7 @@ void MainWindow::on_b1_addBtn_clicked()
         qreal ball_x = x1 + (dist * (x2 - x1));
         qreal ball_y = y1 + (dist * (y2 - y1));
 
-        Ball *ball = new Ball(ball_x, ball_y, speed, angle);
-        scene->addItem(ball);
+        addBall(ball_x, ball_y, speed, angle);
     }
 }
 
@@ -240,8 +244,7 @@ void MainWindow::on_b2_addBtn_clicked()
         float dist = i*1.0 / (count - 1);
         qreal angle = angle1 + dist * (angle2-angle1);
 
-        Ball *ball = new Ball(x, y, speed, angle);
-        scene->addItem(ball);
+        addBall(x, y, speed, angle);
     }
 }
 
@@ -261,8 +264,7 @@ void MainWindow::on_b3_addBtn_clicked()
         float dist = i*1.0 / (count - 1);
         qreal speed = speed1 + dist * (speed2-speed1);
 
-        Ball *ball = new Ball(x, y, speed, angle);
-        scene->addItem(ball);
+        addBall(x, y, speed, angle);
     }
 }
 
