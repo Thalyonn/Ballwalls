@@ -5,11 +5,11 @@
 #include <QRunnable>
 #include <QThread>
 #include "ball.h"
-class Worker : public QObject, public QRunnable
+class Worker : public QObject
 {
     Q_OBJECT
 public:
-    Worker(QObject* parent = nullptr, Ball *ball = nullptr);
+    explicit Worker(Ball *ball, QObject* parent = nullptr);
     Ball *ball;
 signals:
     void finished(Worker* worker);
@@ -18,7 +18,7 @@ public slots:
     void start();
 
 protected:
-    void run() override;
+    virtual void run();
 
 private:
     QThread workerThread;

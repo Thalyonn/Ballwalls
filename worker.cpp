@@ -1,8 +1,10 @@
 #include "worker.h"
 #include "wall.h"
-Worker::Worker(QObject* parent, Ball *pBall) : QObject(parent), ball(pBall) {
-    this->moveToThread(&this->workerThread);
-    this->workerThread.start();
+#include "QDebug"
+Worker::Worker(Ball *pBall, QObject* parent) : QObject{parent} {
+    //this->moveToThread(&this->workerThread);
+    //this->workerThread.start();
+    ball = pBall;
     this->isRunning = false;
 }
 
@@ -16,6 +18,7 @@ void Worker::start() {
 
 void Worker::run()
 {
+    qDebug() << "Running" ;
     //this is the code that used to be in advance
     QList<QGraphicsItem*> collisions = ball->collidingItems();
 
@@ -46,6 +49,8 @@ void Worker::run()
     //Calculate next direction of x and y formula
     qreal dx = ball->speed * ball->vx;
     qreal dy = ball->speed * ball->vy;
+
+    qDebug() << "Got dx and dy" ;
 
     //send back a signal containing dx, dy, the ball pointer, and the worker
     emit completed(dx, dy, ball, this);

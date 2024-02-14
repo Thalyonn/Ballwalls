@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QTimer>
+#include <QQueue>
 #include <QLCDNumber>
 #include "scenewindow.h"
 #include "worker.h"
@@ -38,6 +39,8 @@ private slots:
 
     void updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker);
 
+    void manageWorkers();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 
@@ -49,7 +52,8 @@ private:
     QTimer *moveTimer;
     QTimer *fpsTimer;
     QLCDNumber *fpsLCD;
-    QThreadPool threadPool;
+    QQueue<QThread*> threadPool;
+    QThread *workThread;
 
 
     QVector<Worker*> workers;

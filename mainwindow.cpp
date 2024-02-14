@@ -35,8 +35,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     //new code
 
-    threadPool.setMaxThreadCount(4); //set to 4 for testing
+    //threadPool.setMaxThreadCount(4); //set to 4 for testing
 
+    for(int i = 0; i < 5; i++)
+    {
+        QThread *thread = new QThread(this);
+        threadPool.enqueue(thread);
+
+    }
 
 
 
@@ -44,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
 
     //connect timer to moveall so moveAll gets called in intervals
-    connect(moveTimer, &QTimer::timeout, this, &MainWindow::moveAll);
+    //connect(moveTimer, &QTimer::timeout, this, &MainWindow::moveAll);
     //calculate frames
 
     connect(moveTimer, &QTimer::timeout, scene, &SceneWindow::calculateFPS);
@@ -114,16 +120,37 @@ void MainWindow::moveAll()
     for(int i = 0; i < workers.size(); i++)
     {
         qDebug() << "Current Worker : " << workers[i];
-        threadPool.start(workers[i]);
+
+        //threadPool.start(workers[i]);
+
         //update positions everytime a worker finishes calculating
-        connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
+
     }
     //threadPool.start(&worker);
 }
 
+void MainWindow::manageWorkers()
+{
+    for(int i = 0; i < workers.size(); i++)
+    {
+        qDebug() << "Managing workers";
+        if(threadPool.isEmpty() == false)
+        {
+            qDebug() << "Managing worker number: " << i;
+            QThread *thread = threadPool.dequeue();
+            workThread = thread;
+            workers[i]->moveToThread(workThread);
+            connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
+        }
+
+
+    }
+}
+
 void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
 {
-    worker->ball->setPos(dx, dy);
+    qDebug() << "UPDATING POSITIONS";
+    //ball->setPos(ball->mapToParent(dx, dy));
 }
 void MainWindow::on_ballAddBtn_clicked()
 {
@@ -144,13 +171,16 @@ void MainWindow::on_ballAddBtn_clicked()
 
     Ball *ball = new Ball(xPos, yPos, speed, direction);
     //create a worker and attatch ball to worker then append it to worker list
-    Worker *worker = new Worker(this, ball);
+    Worker *worker = new Worker(ball);
     workers.append(worker);
+    manageWorkers();
     //add ball to scene
     scene->addItem(ball);
 
 
 }
+
+
 
 void MainWindow::on_wallAddBtn_clicked() {
     qreal x1 = ui->wallX1->cleanText().toInt();
