@@ -18,7 +18,7 @@ void Worker::start() {
 }
 
 void Worker::addBall(Ball* ballToAdd) {
-    qDebug() << "Added ball to this worker";
+    qDebug() << "Added ball to this worker with speed " << ballToAdd->speed;
     balls.append(ballToAdd);
 }
 

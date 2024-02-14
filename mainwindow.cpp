@@ -184,11 +184,12 @@ void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
 void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     //Distribute it to a thread
     Ball *ball = new Ball(x, y, speed, dir);
-    connect(this, &MainWindow::sendBall, workers[current], &Worker::addBall);
+    //connect(this, &MainWindow::sendBall, workers[current], &Worker::addBall);
     //workers[current]->balls.append(ball);
     balls.append(ball);
     scene->addItem(ball);
-    emit sendBall(ball);
+    //emit sendBall(ball);
+    workers[current]->addBall(ball);
     qDebug() << "Added a ball to thread " << current;
     current += 1;
     current %= threadCount;
