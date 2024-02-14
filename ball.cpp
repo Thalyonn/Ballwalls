@@ -131,6 +131,7 @@ void Ball::updatePosition() {
 }
 
 void Ball::render() {
+    qDebug() << "im rendering :)";
     setPos(xPos, yPos);
 }
 
