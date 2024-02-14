@@ -7,6 +7,11 @@ Worker::Worker(Ball *pBall, QObject* parent) : QObject{parent} {
     ball = pBall;
     this->isRunning = false;
 }
+Worker::Worker(QObject* parent) : QObject{parent} {
+    //this->moveToThread(&this->workerThread);
+    //this->workerThread.start();
+    this->isRunning = false;
+}
 
 void Worker::start() {
     if (!this->isRunning)

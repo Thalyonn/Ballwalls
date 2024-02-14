@@ -10,6 +10,7 @@ class Worker : public QObject
     Q_OBJECT
 public:
     explicit Worker(Ball *ball, QObject* parent = nullptr);
+    Worker(QObject* parent = nullptr);
     QVector<Ball*> balls;
     Ball *ball;
 signals:
