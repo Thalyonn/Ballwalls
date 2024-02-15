@@ -16,12 +16,16 @@ qreal SceneWindow::getFPS()
 
 void SceneWindow::calculateFPS()
 {
+    //put curTime into a function so it is constant
     QTime curTime = QTime::currentTime();
+    //return curTime - prevTime in MS and this will be the passedTime
     int passedTime = prevTime.msecsTo(curTime);
-    prevTime = curTime;
+
     if (passedTime > 0) {
-        double fps = 1000.0 / passedTime;
+        //time is currently in MS so divide 1000 by passed time to get fps
+        double fps = 1000 / passedTime;
         curFPS = fps;
-        //qDebug() << "current FPS:" << QString::number(fps, 'f', 2);
     }
+    //set the scenes previous time to the current time for next calculation
+    prevTime = curTime;
 }
