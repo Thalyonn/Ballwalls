@@ -183,7 +183,7 @@ void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
 
 void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     //Distribute it to a thread
-    Ball *ball = new Ball(x, y, speed, dir);
+    Ball *ball = new Ball(x/2, y/2, speed, dir);
     //connect(this, &MainWindow::sendBall, workers[current], &Worker::addBall);
     //workers[current]->balls.append(ball);
     balls.append(ball);
