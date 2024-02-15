@@ -77,10 +77,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     QTransform qtTransform;
     //-2 allows for space on the wall
-    qtTransform.translate(0, ui->graphicsView->height());
+    qtTransform.translate(0, ui->graphicsView->height()+10);
     //zoomout scene note: this is just so i can see the bounding box
     //y axis is inverted in qt so have to make it negative
-    qtTransform.scale(1.0, -1.0);
+    qtTransform.scale(0.9, -0.9);
     ui->graphicsView->setTransform(qtTransform);
 
 
