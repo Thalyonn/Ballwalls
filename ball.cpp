@@ -92,7 +92,7 @@ void Ball::advance(int phase)
 }
 
 void Ball::updatePosition() {
-
+    qDebug() << QThread::currentThread();
     QList<QGraphicsItem*> collisions = collidingItems();
 
     for (QGraphicsItem* item : collisions) {

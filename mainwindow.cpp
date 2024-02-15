@@ -151,7 +151,7 @@ void MainWindow::manageWorkers()
             QThread *thread = threadPool.dequeue();
             workThread = thread;
             workers[i]->moveToThread(workThread);
-            QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::QueuedConnection);
+            QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::BlockingQueuedConnection);
             //connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
             connect(workers[i], &Worker::done, this, &MainWindow::manageRenderThread);
             if(!workThread->isRunning())
