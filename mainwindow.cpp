@@ -58,12 +58,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(moveTimer, &QTimer::timeout, scene, &SceneWindow::calculateFPS);
 
-    moveTimer->start(10); //number here notes every millisecond the ball will move
+    moveTimer->start(16); //number here notes every millisecond the ball will move
 
     //timer to update fps lcd
     fpsTimer = new  QTimer (this);
     connect(fpsTimer, &QTimer::timeout, this, &MainWindow::updateFPS);
-    fpsTimer->start(10);
+    fpsTimer->start(500);
     //LCD UI element to display fps on
     fpsLCD = ui->fpsLCD;
 
