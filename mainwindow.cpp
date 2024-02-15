@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     qtTransform.translate(0, ui->graphicsView->height());
     //zoomout scene note: this is just so i can see the bounding box
     //y axis is inverted in qt so have to make it negative
-    qtTransform.scale(0.5, -0.5);
+    qtTransform.scale(1.0, -1.0);
     ui->graphicsView->setTransform(qtTransform);
 
 
