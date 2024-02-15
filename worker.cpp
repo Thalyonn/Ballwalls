@@ -12,8 +12,9 @@ Worker::Worker(QObject* parent) : QObject{parent} {
 void Worker::start() {
     if (!this->isRunning)
     {
+        qDebug() << "Start running";
         this->isRunning = true;
-        this->run();
+        compute();
     }
 }
 
@@ -23,17 +24,31 @@ void Worker::addBall(Ball* ballToAdd) {
 }
 
 void Worker::compute() {
-    if (balls.size() == 0) {
-        return;
-    }
-    //qDebug() << "Computing" ;
 
-    for (Ball* ball : balls) {
-        ball->updatePosition();
-    }
 
-    //Emit a done signal
-    emit done();
+    int i;
+    qDebug() << "Worker is running on thread " << QThread::currentThread();
+        if (balls.size() == 0) {
+            return;
+        }
+        qDebug() << "Computing" ;
+
+        //for (Ball* ball : balls) {
+        //    ball->updatePosition();
+        //}
+
+        for(i = 0; i<balls.size(); i++)
+        {
+            balls[i]->updatePosition();
+            qDebug() << "ball at " << i << " of " << balls.size() << " for thread " << QThread::currentThread();
+        }
+
+
+        qDebug() << "i at " << i;
+        //Emit a done signal
+        emit done(this);
+
+
 }
 
 void Worker::run()

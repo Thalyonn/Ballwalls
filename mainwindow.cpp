@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
     current = 0; //Used for thread ball distribution later
     threadCount = 8;
 
+    updateCounter =0;
+
     //we need a timer for the moving objects
     moveTimer = new QTimer(this);
 
@@ -151,7 +153,7 @@ void MainWindow::manageWorkers()
             QThread *thread = threadPool.dequeue();
             workThread = thread;
             workers[i]->moveToThread(workThread);
-            QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::BlockingQueuedConnection);
+            QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::QueuedConnection);
             //connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
             connect(workers[i], &Worker::done, this, &MainWindow::manageRenderThread);
             if(!workThread->isRunning())
@@ -162,17 +164,35 @@ void MainWindow::manageWorkers()
 
             }
         }
+        else
+        {
+            qDebug() << "threadpool empty";
+        }
 
 
     }
 }
 
 //Kind of a copy of updatePositions()? Clean up na lang later
-void MainWindow::manageRenderThread() {
-    //qDebug() << "UPDATING POSITIONS";
-    for (Ball *ball : balls) {
-        ball->render();
+void MainWindow::manageRenderThread(Worker *worker) {
+    updateCounter++;
+    disconnect(moveTimer,  &QTimer::timeout, worker, &Worker::compute);
+    QThread *newThread = worker->thread();
+    newThread->disconnect();
+    threadPool.enqueue(newThread);
+    //disconnect(workers, &Worker::done, this, &MainWindow::manageRenderThread);
+    qDebug() << "coutning: " << updateCounter;
+    if(updateCounter == workers.size())
+    {
+        qDebug() << "counter met " << workers.size();
+        for (Ball *ball : worker->balls) {
+            ball->render();
+        }
+        manageWorkers();
+        updateCounter = 0;
     }
+    //qDebug() << "UPDATING POSITIONS";
+
 }
 
 void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)

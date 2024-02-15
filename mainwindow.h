@@ -41,7 +41,7 @@ private slots:
 
     void addBall(qreal x, qreal y, qreal dir, qreal angle);
     void manageWorkers();
-    void manageRenderThread();
+    void manageRenderThread(Worker *worker);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -63,6 +63,7 @@ private:
     QThread *workThread;
     QVector<Ball*> balls;
 
+    int updateCounter;
 
     QVector<Worker*> workers;
 

@@ -24,11 +24,11 @@ protected:
 
 private:
     QThread workerThread;
-    bool isRunning;
+    bool isRunning;\
 
 signals:
     void completed(qreal dx, qreal dy, Ball *ball, Worker *worker);
-    void done();
+    void done(Worker *worker);
 
 };
 
