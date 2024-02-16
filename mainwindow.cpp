@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qmath.h"
 #include "ui_mainwindow.h"
 #include "ball.h"
 #include "wall.h"
@@ -8,6 +9,10 @@
 #include "QPoint"
 #include "QDebug"
 #include "scenewindow.h"
+#include "QRunnable"
+#include "qthread.h"
+#include "QThreadPool"
+#include "worker.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,21 +29,41 @@ MainWindow::MainWindow(QWidget *parent)
 
     //current frame starts at 0
     curFrame = 0;
+    current = 0; //Used for thread ball distribution later
+    threadCount = 8;
 
     //we need a timer for the moving objects
     moveTimer = new QTimer(this);
 
+    //new code
+
+    //threadPool.setMaxThreadCount(4); //set to 4 for testing
+
+    for(int i = 0; i < threadCount; i++)
+    {
+        //note: if balls stop moving is cause i haven't queued back the thread
+        QThread *thread = new QThread(this);
+        threadPool.enqueue(thread);
+
+    }
+
+
+
     //move the ball
-    connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
+    //connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
+
+    //connect timer to moveall so moveAll gets called in intervals
+    //connect(moveTimer, &QTimer::timeout, this, &MainWindow::moveAll);
     //calculate frames
+
     connect(moveTimer, &QTimer::timeout, scene, &SceneWindow::calculateFPS);
 
-    moveTimer->start(10); //number here notes every millisecond the ball will move
+    moveTimer->start(16); //number here notes every millisecond the ball will move
 
     //timer to update fps lcd
     fpsTimer = new  QTimer (this);
     connect(fpsTimer, &QTimer::timeout, this, &MainWindow::updateFPS);
-    fpsTimer->start(10);
+    fpsTimer->start(500);
     //LCD UI element to display fps on
     fpsLCD = ui->fpsLCD;
 
@@ -50,25 +75,32 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setSceneRect(0, 0, 1282, 722); //set scene rectangle
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    QTransform qtTransform;\
+    QTransform qtTransform;
     //-2 allows for space on the wall
-    qtTransform.translate(0, ui->graphicsView->height());
+    qtTransform.translate(0, ui->graphicsView->height()+10);
     //zoomout scene note: this is just so i can see the bounding box
     //y axis is inverted in qt so have to make it negative
-    qtTransform.scale(0.5, -0.5);
+    qtTransform.scale(0.9, -0.9);
     ui->graphicsView->setTransform(qtTransform);
 
 
-    Wall *downWall = new Wall(-1, -1, 1281, -1);
-    Wall *rightWall = new Wall(1281, -1, 1281, 721);
-    Wall *upWall  = new Wall(-1, 721, 1281, 721);
-    Wall *leftWall = new Wall(-1, -1, -1, 721);
+    Wall *downWall = new Wall(-11, -11, 1291, -11);
+    Wall *rightWall = new Wall(1291, -11, 1291, 731);
+    Wall *upWall  = new Wall(-11, 731, 1291, 731);
+    Wall *leftWall = new Wall(-11, -11, -11, 731);
     scene->addItem(leftWall);
     scene->addItem(downWall);
     scene->addItem(upWall);
     scene->addItem(rightWall);
     //scene->addItem(wall2);
 
+    //Create workers
+    for (int i = 0; i < threadCount; i++) {
+        Worker *w = new Worker();
+        workers.append(w);
+    }
+
+    manageWorkers();
 }
 
 
@@ -91,6 +123,52 @@ void MainWindow::updateFPS()
     fpsLCD->display(fps);
 }
 
+void MainWindow::manageWorkers()
+{
+    //qDebug() << "size  workers" << workers.size();
+    for(int i = 0; i < workers.size(); i++)
+    {
+        //qDebug() << "Managing workers";
+        if(threadPool.isEmpty() == false)
+        {
+            //qDebug() << "Managing worker number: " << i;
+            QThread *thread = threadPool.dequeue();
+            workThread = thread;
+            workers[i]->moveToThread(workThread);
+            QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::BlockingQueuedConnection);
+            //connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
+            connect(workers[i], &Worker::done, this, &MainWindow::manageRenderThread);
+            if(!workThread->isRunning())
+            {
+                workThread->start();
+            }
+        }
+
+
+    }
+}
+
+void MainWindow::manageRenderThread() {
+    //qDebug() << "UPDATING POSITIONS";
+    for (Ball *ball : balls) {
+        ball->render();
+    }
+}
+
+void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
+    //Distribute it to a thread
+    Ball *ball = new Ball(x/2, y/2, speed, dir);
+    //connect(this, &MainWindow::sendBall, workers[current], &Worker::addBall);
+    //workers[current]->balls.append(ball);
+    balls.append(ball);
+    scene->addItem(ball);
+    //emit sendBall(ball);
+    workers[current]->addBall(ball);
+    //qDebug() << "Added a ball to thread " << current;
+    current += 1;
+    current %= threadCount;
+}
+
 void MainWindow::on_ballAddBtn_clicked()
 {
     /*
@@ -103,27 +181,87 @@ void MainWindow::on_ballAddBtn_clicked()
     scene->addItem(ball);
     ui->graphicsView->setScene(scene);*/
 
-    qreal xPos = 1280;
-    qreal yPos = 0;
-    qreal speed = 5;
-    qreal direction = 270;
+    qreal xPos = ui->ballX->cleanText().toInt();
+    qreal yPos = ui->ballY->cleanText().toInt();
+    qreal speed = ui->ballSpeed->cleanText().toInt();
+    qreal direction = ui->ballAngle->cleanText().toInt();
 
-    Ball *ball = new Ball(xPos, yPos, speed, direction);
-    scene->addItem(ball);
-
+    addBall(xPos, yPos, speed, direction);
 
 }
+
+
 
 void MainWindow::on_wallAddBtn_clicked() {
-    qreal x1 = -100;
-    qreal y1 = 100;
-    qreal x2 = -100;
-    qreal y2 = -100;
+    qreal x1 = ui->wallX1->cleanText().toInt();
+    qreal y1 = ui->wallY1->cleanText().toInt();
+    qreal x2 = ui->wallX2->cleanText().toInt();
+    qreal y2 = ui->wallY2->cleanText().toInt();
 
-    Wall *wall = new Wall(x1-20, y1, x2, y2);
-    Wall *wall2 = new Wall(x1+400, y1, x2+400, y2-400);
+    Wall *wall = new Wall(x1, y1, x2, y2);
     scene->addItem(wall);
-    scene->addItem(wall2);
 }
+
+
+//Batch operation 1: Add balls along a line
+void MainWindow::on_b1_addBtn_clicked()
+{
+    int count = ui->b1_count->cleanText().toInt();
+
+    qreal speed = ui->b1_speed->cleanText().toInt();
+    qreal angle = ui->b1_angle->cleanText().toInt();
+    qreal x1 = ui->b1_x1->cleanText().toInt();
+    qreal y1 = ui->b1_y1->cleanText().toInt();
+    qreal x2 = ui->b1_x2->cleanText().toInt();
+    qreal y2 = ui->b1_y2->cleanText().toInt();
+
+    for (int i = 0; i<count;i++) {
+        float dist = i*1.0 / (count - 1);
+        qreal ball_x = x1 + (dist * (x2 - x1));
+        qreal ball_y = y1 + (dist * (y2 - y1));
+
+        addBall(ball_x, ball_y, speed, angle);
+    }
+}
+
+//Batch operation 2: Add balls between two angles
+void MainWindow::on_b2_addBtn_clicked()
+{
+    int count = ui->b2_count->cleanText().toInt();
+
+    qreal speed = ui->b2_speed->cleanText().toInt();
+    qreal angle1 = ui->b2_angle1->cleanText().toInt();
+    qreal angle2 = ui->b2_angle2->cleanText().toInt();
+    qreal x = ui->b2_x->cleanText().toInt();
+    qreal y = ui->b2_y->cleanText().toInt();
+
+    for (int i = 0; i<count;i++) {
+        float dist = i*1.0 / (count - 1);
+        qreal angle = angle1 + dist * (angle2-angle1);
+
+        addBall(x, y, speed, angle);
+    }
+}
+
+//Batch operation 3: Add balls between speeds
+void MainWindow::on_b3_addBtn_clicked()
+{
+
+    int count = ui->b3_count->cleanText().toInt();
+
+    qreal speed1 = ui->b3_speed1->cleanText().toInt();
+    qreal speed2 = ui->b3_speed2->cleanText().toInt();
+    qreal angle = ui->b3_angle->cleanText().toInt();
+    qreal x = ui->b3_x->cleanText().toInt();
+    qreal y = ui->b3_y->cleanText().toInt();
+
+    for (int i = 0; i<count;i++) {
+        float dist = i*1.0 / (count - 1);
+        qreal speed = speed1 + dist * (speed2-speed1);
+
+        addBall(x, y, speed, angle);
+    }
+}
+
 
 

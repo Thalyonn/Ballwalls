@@ -5,6 +5,9 @@
 #include "QPair"
 #include <QGraphicsItem>
 #include "wall.h"
+#include "QRunnable"
+#include "qthread.h"
+#include "QThreadPool"
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     //xPos and yPos are only the initial positions to set
@@ -17,7 +20,7 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     vx = qCos(radDir);
     vy = qSin(radDir);
 
-    qDebug() << "Ball spawned at " << double(xPos) <<  " and " << QString::number(yPos);
+    //qDebug() << "Ball spawned at " << double(xPos) <<  " and " << QString::number(yPos);
     //setPos(mapToParent(xPos, yPos));
 
 
@@ -47,6 +50,8 @@ QPainterPath Ball::shape() const
 void Ball::advance(int phase)
 {
     if(!phase) return;
+
+
 
     QList<QGraphicsItem*> collisions = collidingItems();
 
@@ -81,8 +86,53 @@ void Ball::advance(int phase)
 
     //apply the position to be used in the graphic view
     //qDebug() << "Ball at coords " << vx <<  " and " << vy;
-    setPos(mapToParent(dx, dy));
+    xPos = xPos + dx;
+    yPos = yPos + dy;
 
+}
+
+void Ball::updatePosition() {
+    qDebug() << QThread::currentThread();
+    QList<QGraphicsItem*> collisions = collidingItems();
+
+    for (QGraphicsItem* item : collisions) {
+        if (typeid(*item) == typeid(Wall)) {
+            //Get normals from wall
+            Wall *w = qgraphicsitem_cast<Wall*>(item);
+            qreal wa = w->getAngle();
+            qreal nx = -qSin(wa);
+            qreal ny = qCos(wa);
+
+            //Formula for angle of reflection: R = V - 2(V . N)N
+            //Dot product of velocity and normal
+            qreal dot = vx * nx + vy * ny;
+            vx = vx - 2 * dot * nx;
+            vy = vy - 2 * dot * ny;
+
+            break;
+            /*
+            //Make it go the other way if it hits something
+            //Proper math for angle of incidence to follow
+            radDir += 3.1415926;
+            vx = qCos(radDir);
+            vy = qSin(radDir);
+            */
+        }
+    }
+    //Calculate next direction of x and y formula
+    qreal dx = speed * vx;
+    qreal dy = speed * vy;
+
+
+    //apply the position to be used in the graphic view
+    //qDebug() << "Ball at coords " << vx <<  " and " << vy;
+    xPos = xPos + dx;
+    yPos = yPos + dy;
+}
+
+void Ball::render() {
+    //qDebug() << "im rendering :)";
+    setPos(xPos, yPos);
 }
 
 void Ball::changeDir(qreal angle)

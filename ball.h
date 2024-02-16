@@ -13,13 +13,16 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void changeDir(qreal angle);
     qreal getDir();
+    qreal vx;
+    qreal vy;
+    qreal speed;
+    void updatePosition();
+    void render();
 
 private:
     qreal xPos;
     qreal yPos;
-    qreal vx;
-    qreal vy;
-    qreal speed;
+
     qreal dir;
     double radDir;
 
