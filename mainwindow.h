@@ -35,10 +35,6 @@ private slots:
 
     void on_b3_addBtn_clicked();
 
-    void moveAll();
-
-    void updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker);
-
     void addBall(qreal x, qreal y, qreal dir, qreal angle);
     void manageWorkers();
     void manageRenderThread();

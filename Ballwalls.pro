@@ -12,7 +12,6 @@ SOURCES += \
     ball.cpp \
     main.cpp \
     mainwindow.cpp \
-    myrunnable.cpp \
     wall.cpp \
     scenewindow.cpp \
     worker.cpp
@@ -20,7 +19,6 @@ SOURCES += \
 HEADERS += \
     ball.h \
     mainwindow.h \
-    myrunnable.h \
     wall.h \
     scenewindow.h \
     worker.h

@@ -123,22 +123,6 @@ void MainWindow::updateFPS()
     fpsLCD->display(fps);
 }
 
-void MainWindow::moveAll()
-{
-    //qDebug() << "Workers : " << workers.size();
-    //iterate through all workers since each contains a ball
-    for(int i = 0; i < workers.size(); i++)
-    {
-        //qDebug() << "Current Worker : " << workers[i];
-
-        //threadPool.start(workers[i]);
-
-        //update positions everytime a worker finishes calculating
-
-    }
-    //threadPool.start(&worker);
-}
-
 void MainWindow::manageWorkers()
 {
     //qDebug() << "size  workers" << workers.size();
@@ -156,10 +140,7 @@ void MainWindow::manageWorkers()
             connect(workers[i], &Worker::done, this, &MainWindow::manageRenderThread);
             if(!workThread->isRunning())
             {
-
                 workThread->start();
-
-
             }
         }
 
@@ -167,18 +148,11 @@ void MainWindow::manageWorkers()
     }
 }
 
-//Kind of a copy of updatePositions()? Clean up na lang later
 void MainWindow::manageRenderThread() {
     //qDebug() << "UPDATING POSITIONS";
     for (Ball *ball : balls) {
         ball->render();
     }
-}
-
-void MainWindow::updatePositions(qreal dx, qreal dy, Ball *ball, Worker *worker)
-{
-    //qDebug() << "UPDATING POSITIONS";
-    //worker->ball->setPos(ball->mapToParent(dx, dy));
 }
 
 void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
