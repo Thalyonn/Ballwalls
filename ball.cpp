@@ -20,10 +20,6 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     vx = qCos(radDir);
     vy = qSin(radDir);
 
-    //qDebug() << "Ball spawned at " << double(xPos) <<  " and " << QString::number(yPos);
-    //setPos(mapToParent(xPos, yPos));
-
-
 }
 
 QRectF Ball::boundingRect() const
@@ -35,7 +31,6 @@ void Ball::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 {
     painter->setBrush(Qt::red);
     painter->drawEllipse(xPos, yPos, 10, 10);
-    //qDebug() << scene();
 }
 
 QPainterPath Ball::shape() const
@@ -70,13 +65,7 @@ void Ball::advance(int phase)
             vy = vy - 2 * dot * ny;
 
             break;
-            /*
-            //Make it go the other way if it hits something
-            //Proper math for angle of incidence to follow
-            radDir += 3.1415926;
-            vx = qCos(radDir);
-            vy = qSin(radDir);
-            */
+
         }
     }
     //Calculate next direction of x and y formula
@@ -85,7 +74,6 @@ void Ball::advance(int phase)
 
 
     //apply the position to be used in the graphic view
-    //qDebug() << "Ball at coords " << vx <<  " and " << vy;
     xPos = xPos + dx;
     yPos = yPos + dy;
 
@@ -110,13 +98,6 @@ void Ball::updatePosition() {
             vy = vy - 2 * dot * ny;
 
             break;
-            /*
-            //Make it go the other way if it hits something
-            //Proper math for angle of incidence to follow
-            radDir += 3.1415926;
-            vx = qCos(radDir);
-            vy = qSin(radDir);
-            */
         }
     }
     //Calculate next direction of x and y formula
@@ -125,13 +106,11 @@ void Ball::updatePosition() {
 
 
     //apply the position to be used in the graphic view
-    //qDebug() << "Ball at coords " << vx <<  " and " << vy;
     xPos = xPos + dx;
     yPos = yPos + dy;
 }
 
 void Ball::render() {
-    //qDebug() << "im rendering :)";
     setPos(xPos, yPos);
 }
 

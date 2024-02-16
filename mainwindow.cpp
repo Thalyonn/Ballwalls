@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "qmath.h"
 #include "ui_mainwindow.h"
 #include "ball.h"
 #include "wall.h"
@@ -20,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     //lock screen to this size
     this->setFixedSize(1550,740);
-    qDebug() << "MINIONS";
+    qDebug() << "Started";
     ui->setupUi(this);
 
     //setup scene
@@ -35,26 +34,13 @@ MainWindow::MainWindow(QWidget *parent)
     //we need a timer for the moving objects
     moveTimer = new QTimer(this);
 
-    //new code
-
-    //threadPool.setMaxThreadCount(4); //set to 4 for testing
 
     for(int i = 0; i < threadCount; i++)
     {
-        //note: if balls stop moving is cause i haven't queued back the thread
         QThread *thread = new QThread(this);
         threadPool.enqueue(thread);
 
     }
-
-
-
-    //move the ball
-    //connect(moveTimer, SIGNAL(timeout()), scene, SLOT(advance()));
-
-    //connect timer to moveall so moveAll gets called in intervals
-    //connect(moveTimer, &QTimer::timeout, this, &MainWindow::moveAll);
-    //calculate frames
 
     connect(moveTimer, &QTimer::timeout, scene, &SceneWindow::calculateFPS);
 
@@ -78,7 +64,6 @@ MainWindow::MainWindow(QWidget *parent)
     QTransform qtTransform;
     //-2 allows for space on the wall
     qtTransform.translate(0, ui->graphicsView->height()+10);
-    //zoomout scene note: this is just so i can see the bounding box
     //y axis is inverted in qt so have to make it negative
     qtTransform.scale(0.9, -0.9);
     ui->graphicsView->setTransform(qtTransform);
@@ -92,7 +77,6 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(downWall);
     scene->addItem(upWall);
     scene->addItem(rightWall);
-    //scene->addItem(wall2);
 
     //Create workers
     for (int i = 0; i < threadCount; i++) {
@@ -111,32 +95,27 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-    // Increment frame count
+    // Default Paint Code
+    // add to frame count
     ++curFrame;
-    // Your painting code goes here
 }
 
 void MainWindow::updateFPS()
 {
-    //qDebug() << "UPDATING FPS";
     int fps = scene->getFPS();
     fpsLCD->display(fps);
 }
 
 void MainWindow::manageWorkers()
 {
-    //qDebug() << "size  workers" << workers.size();
     for(int i = 0; i < workers.size(); i++)
     {
-        //qDebug() << "Managing workers";
         if(threadPool.isEmpty() == false)
         {
-            //qDebug() << "Managing worker number: " << i;
             QThread *thread = threadPool.dequeue();
             workThread = thread;
             workers[i]->moveToThread(workThread);
             QObject::connect(moveTimer, &QTimer::timeout, workers[i], &Worker::compute, Qt::BlockingQueuedConnection);
-            //connect(workers[i], &Worker::completed, this, &MainWindow::updatePositions);
             connect(workers[i], &Worker::done, this, &MainWindow::manageRenderThread);
             if(!workThread->isRunning())
             {
@@ -149,7 +128,6 @@ void MainWindow::manageWorkers()
 }
 
 void MainWindow::manageRenderThread() {
-    //qDebug() << "UPDATING POSITIONS";
     for (Ball *ball : balls) {
         ball->render();
     }
@@ -158,28 +136,16 @@ void MainWindow::manageRenderThread() {
 void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     //Distribute it to a thread
     Ball *ball = new Ball(x/2, y/2, speed, dir);
-    //connect(this, &MainWindow::sendBall, workers[current], &Worker::addBall);
-    //workers[current]->balls.append(ball);
     balls.append(ball);
     scene->addItem(ball);
-    //emit sendBall(ball);
     workers[current]->addBall(ball);
-    //qDebug() << "Added a ball to thread " << current;
     current += 1;
     current %= threadCount;
 }
 
 void MainWindow::on_ballAddBtn_clicked()
 {
-    /*
-    QGraphicsView *view = new QGraphicsView();
-    QGraphicsScene *scene = new QGraphicsScene();
-    view->setScene(scene);
-    QGraphicsEllipseItem *ball = new QGraphicsEllipseItem();
-    ball->setRect(-5, -10, 10, 20);
-    ball->setPos(view->viewport()->rect().center());
-    scene->addItem(ball);
-    ui->graphicsView->setScene(scene);*/
+
 
     qreal xPos = ui->ballX->cleanText().toInt();
     qreal yPos = ui->ballY->cleanText().toInt();
