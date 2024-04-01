@@ -12,13 +12,15 @@
 #include "qthread.h"
 #include "QThreadPool"
 #include "worker.h"
+#include "sprite.h"
+#include <QKeyEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     //lock screen to this size
-    this->setFixedSize(1550,740);
+    this->resize(1550, 740);
     qDebug() << "Started";
     ui->setupUi(this);
 
@@ -85,12 +87,23 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     manageWorkers();
+
+    // Create the sprite
+    Sprite* sprite = new Sprite(0, 0, 50, 50); // Adjust the size as needed
+    scene->addItem(sprite);
+
+    // Connect the sprite's position change signal to the centering slot
+    connect(sprite, &Sprite::positionChanged, this, &MainWindow::centerSprite);
+
+    // Set the initial zoom level
+    setZoomLevel(1.0); // 1.0 represents no zoom (100%)
 }
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete sprite;
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
@@ -229,5 +242,50 @@ void MainWindow::on_b3_addBtn_clicked()
     }
 }
 
+void MainWindow::centerSprite()
+{
+    QPointF spritePos = sprite->pos();
+    QRectF viewRect = ui->graphicsView->mapToScene(ui->graphicsView->rect()).boundingRect();
+    QPointF newViewCenter = spritePos - QPointF(viewRect.width() / 2, viewRect.height() / 2);
+    ui->graphicsView->centerOn(newViewCenter);
+}
 
+void MainWindow::setZoomLevel(qreal zoomFactor)
+{
+    // Reset the transformation
+    ui->graphicsView->resetTransform();
 
+    // Apply the zoom transformation
+    ui->graphicsView->scale(zoomFactor, zoomFactor);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    qreal moveStep = 10; // Adjust the step size as needed
+
+    switch (event->key()) {
+    case Qt::Key_Left:
+        sprite->setPos(sprite->pos().x() - moveStep, sprite->pos().y());
+        break;
+    case Qt::Key_Right:
+        sprite->setPos(sprite->pos().x() + moveStep, sprite->pos().y());
+        break;
+    case Qt::Key_Up:
+        sprite->setPos(sprite->pos().x(), sprite->pos().y() - moveStep);
+        break;
+    case Qt::Key_Down:
+        sprite->setPos(sprite->pos().x(), sprite->pos().y() + moveStep);
+        break;
+    case Qt::Key_Plus:
+        setZoomLevel(ui->graphicsView->transform().m11() * 1.2); // Increase zoom level by 20%
+        break;
+    case Qt::Key_Minus:
+        setZoomLevel(ui->graphicsView->transform().m11() / 1.2); // Decrease zoom level by 20%
+        break;
+    default:
+        QMainWindow::keyPressEvent(event);
+        break;
+    }
+
+    centerSprite();
+}

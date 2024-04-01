@@ -9,6 +9,7 @@
 #include <QLCDNumber>
 #include "scenewindow.h"
 #include "worker.h"
+#include "sprite.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -61,6 +62,12 @@ private:
 
 
     QVector<Worker*> workers;
+
+    void centerSprite();
+    void keyPressEvent(QKeyEvent *event) override;
+    void setZoomLevel(qreal zoomFactor);
+
+    Sprite *sprite;
 
 };
 #endif // MAINWINDOW_H

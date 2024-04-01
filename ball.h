@@ -10,7 +10,7 @@ public:
     Ball(qreal pxPos, qreal pyPos, qreal speed, qreal direction);
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     void changeDir(qreal angle);
     qreal getDir();
     qreal vx;

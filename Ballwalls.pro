@@ -12,6 +12,7 @@ SOURCES += \
     ball.cpp \
     main.cpp \
     mainwindow.cpp \
+    sprite.cpp \
     wall.cpp \
     scenewindow.cpp \
     worker.cpp
@@ -19,6 +20,7 @@ SOURCES += \
 HEADERS += \
     ball.h \
     mainwindow.h \
+    sprite.h \
     wall.h \
     scenewindow.h \
     worker.h
