@@ -80,21 +80,17 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(upWall);
     scene->addItem(rightWall);
 
+    // Calculate the center position of the transformed view
+    qreal centerX = ui->graphicsView->width()/ 2.0;
+    qreal centerY = ui->graphicsView->height() / 2.0;
+
     // Set the initial zoom level
     setZoomLevel(37.0); // 1.0 represents no zoom (100%) 37.0 represents client zoom
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
-    // Calculate the center position of the transformed view
-    qreal centerX = ui->graphicsView->viewport()->width() / 2.0;
-    qreal centerY = ui->graphicsView->viewport()->height() / 2.0;
-
-    // Map the center position from viewport coordinates to scene coordinates
-    QPointF centerScenePos = ui->graphicsView->mapToScene(QPoint(centerX, centerY));
-
     // Create and add the sprite at the center position
-    sprite = new Sprite(0, 0, 1, 1); // Assuming the sprite constructor takes x, y, width, height
+    sprite = new Sprite(centerX, centerY, 1, 1); // Assuming the sprite constructor takes x, y, width, height
     scene->addItem(sprite);
-    sprite->setPos(centerScenePos.x() - sprite->boundingRect().width() / 2, centerScenePos.y() - sprite->boundingRect().height() / 2);
 
     // Connect sprite movement signal to a slot that adjusts the view
     connect(sprite, &Sprite::positionChanged, this, &MainWindow::adjustViewToSprite);
