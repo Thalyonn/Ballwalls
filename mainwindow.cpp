@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setSceneRect(0, 0, 1280, 720);
 
     ui->graphicsView->setCacheMode(QGraphicsView::CacheNone);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+
     QTransform qtTransform;
     //-2 allows for space on the wall
     qtTransform.translate(0, ui->graphicsView->height()+10);
@@ -96,8 +98,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sprite, &Sprite::positionChanged, this, &MainWindow::adjustViewToSprite);
 
     scene->addItem(sprite);
-
-    connect(sprite, &Sprite::spriteMoved, this, &MainWindow::adjustView);
     ui->graphicsView->installEventFilter(this);
 
     //Create workers
@@ -262,21 +262,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     return QMainWindow::eventFilter(obj, event);
 }
 
-void MainWindow::centerSprite(QPointF newPos)
-{
-    QRectF sceneRect = scene->sceneRect();
-    QRectF viewRect = ui->graphicsView->mapToScene(ui->graphicsView->rect()).boundingRect();
-    QPointF viewCenter = viewRect.center();
-
-    // Calculate the new center position, considering the inverted y-axis
-    QPointF newCenter = QPointF(
-        newPos.x() - viewCenter.x() + sceneRect.width() / 2,
-        sceneRect.height() / 2 - (newPos.y() - viewCenter.y())
-        );
-
-    ui->graphicsView->centerOn(newCenter);
-}
-
 void MainWindow::setZoomLevel(qreal zoomFactor)
 {
     // Reset the transformation
@@ -286,17 +271,15 @@ void MainWindow::setZoomLevel(qreal zoomFactor)
     ui->graphicsView->scale(zoomFactor, zoomFactor);
 }
 
-void MainWindow::adjustView(qreal deltaX, qreal deltaY) {
-    QPointF currentCenter = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
-    QPointF newCenter = QPointF(currentCenter.x() + deltaX, currentCenter.y() + deltaY);
-    ui->graphicsView->centerOn(newCenter);
-}
-
-void MainWindow::adjustViewToSprite(const QPointF& newPos) {
-
+void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal deltaY) {
     qDebug() << "Adjusting view to sprite. New sprite position:" << newPos;
+    qDebug() << "deltaX:" << deltaX;
+    qDebug() << "deltaY:" << deltaY;
 
-    ui->graphicsView->centerOn(newPos );
+    ui->graphicsView->translate(deltaX, deltaY);
+
+    QPointF translatedCenter = newPos + QPointF(16, 9);
+    ui->graphicsView->centerOn(translatedCenter);
 
     QPointF newViewCenter = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
     qDebug() << "View centered on new position. New view center in scene coordinates:" << newViewCenter;

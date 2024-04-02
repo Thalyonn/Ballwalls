@@ -31,7 +31,7 @@ public:
 
 signals:
     void spriteMoved(qreal deltaX, qreal deltaY);
-    void positionChanged(const QPointF& newPos);
+    void positionChanged(const QPointF& newPos, qreal deltaX, qreal deltaY);
 
 private:
     qreal m_x;

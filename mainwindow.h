@@ -63,11 +63,9 @@ private:
 
     QVector<Worker*> workers;
 
-    void centerSprite(QPointF newPos);
     void setZoomLevel(qreal zoomFactor);
     bool eventFilter(QObject *obj, QEvent *event);
-    void adjustView(qreal deltaX, qreal deltaY);
-    void adjustViewToSprite(const QPointF& newPos);
+    void adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal delaY);
 
     Sprite *sprite;
 
