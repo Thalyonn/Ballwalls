@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setSceneRect(0, 0, 1280, 720);
 
     ui->graphicsView->setCacheMode(QGraphicsView::CacheNone);
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
     QTransform qtTransform;
