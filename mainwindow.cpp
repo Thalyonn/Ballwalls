@@ -14,6 +14,8 @@
 #include "worker.h"
 #include "sprite.h"
 #include <QKeyEvent>
+#include <QScrollBar>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -63,16 +65,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setSceneRect(0, 0, 1280, 720);
 
     ui->graphicsView->setCacheMode(QGraphicsView::CacheNone);
-    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    //ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QTransform qtTransform;
-    //-2 allows for space on the wall
-    qtTransform.translate(0, ui->graphicsView->height()+10);
-    //y axis is inverted in qt so have to make it negative
-    qtTransform.scale(0.9, -0.9);
-    ui->graphicsView->setTransform(qtTransform);
 
 
     Wall *downWall = new Wall(-11, -11, 1291, -11);
@@ -94,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Create and add the sprite at the center position
     sprite = new Sprite(centerX, centerY, 1, 1); // Assuming the sprite constructor takes x, y, width, height
+    adjustViewToSprite(QPointF(centerX, centerY), 0, 0);
     scene->addItem(sprite);
 
     // Connect sprite movement signal to a slot that adjusts the view
@@ -274,15 +270,34 @@ void MainWindow::setZoomLevel(qreal zoomFactor)
 }
 
 void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal deltaY) {
+    if (!ui->graphicsView->isEnabled()) {
+        ui->graphicsView->setEnabled(true); // Enable the widget if it's disabled
+    }
+
+    if (!ui->graphicsView->isVisible()) {
+        ui->graphicsView->show(); // Show the widget if it's hidden
+    }
+
     qDebug() << "Adjusting view to sprite. New sprite position:" << newPos;
-    qDebug() << "deltaX:" << deltaX;
-    qDebug() << "deltaY:" << deltaY;
 
-    ui->graphicsView->translate(deltaX, deltaY);
+    // Scaling factors for trial and error adjustment
+    double scaleX = 1; // Example scaling factor, adjust through trial and error
+    double scaleY = 1; // Example scaling factor, adjust through trial and error
 
-    QPointF translatedCenter = newPos + QPointF(16, 9);
-    ui->graphicsView->centerOn(translatedCenter);
+    // Calculate manual offsets with scaling factors
+    qreal offsetX = (newPos.x() - ui->graphicsView->viewport()->width() / 2.0) * scaleX;
+    qreal offsetY = (newPos.y() - ui->graphicsView->viewport()->height() / 2.0) * scaleY;
+
+    // Adjusted new position applying the offsets
+    QPointF adjustedNewPos = newPos + QPointF(offsetX, offsetY);
+
+    // Directly center the view on the adjusted new position
+    ui->graphicsView->centerOn(adjustedNewPos);
+
+    // For immediate update, if needed
+    ui->graphicsView->viewport()->update();
 
     QPointF newViewCenter = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
-    qDebug() << "View centered on new position. New view center in scene coordinates:" << newViewCenter;
+    qDebug() << "View centered on adjusted position. New view center in scene coordinates:" << newViewCenter;
 }
+
