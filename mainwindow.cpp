@@ -268,31 +268,3 @@ void MainWindow::setZoomLevel(qreal zoomFactor)
     ui->graphicsView->scale(zoomFactor, zoomFactor);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-    qreal moveStep = 10; // Adjust the step size as needed
-
-    switch (event->key()) {
-    case Qt::Key_Left:
-        sprite->setPos(sprite->pos().x() - moveStep, sprite->pos().y());
-        break;
-    case Qt::Key_Right:
-        sprite->setPos(sprite->pos().x() + moveStep, sprite->pos().y());
-        break;
-    case Qt::Key_Up:
-        sprite->setPos(sprite->pos().x(), sprite->pos().y() - moveStep);
-        break;
-    case Qt::Key_Down:
-        sprite->setPos(sprite->pos().x(), sprite->pos().y() + moveStep);
-        break;
-    case Qt::Key_Plus:
-        setZoomLevel(ui->graphicsView->transform().m11() * 1.2); // Increase zoom level by 20%
-        break;
-    case Qt::Key_Minus:
-        setZoomLevel(ui->graphicsView->transform().m11() / 1.2); // Decrease zoom level by 20%
-        break;
-    default:
-        QMainWindow::keyPressEvent(event);
-        break;
-    }
-}
