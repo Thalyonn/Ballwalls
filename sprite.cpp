@@ -1,11 +1,13 @@
 #include "sprite.h"
 #include <QPainter>
 #include <QStyleOption>
+#include <QKeyEvent>
 
 Sprite::Sprite(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent)
     : QGraphicsItem(parent), m_x(x), m_y(y), m_width(width), m_height(height), m_direction(0)
 {
     setFlag(QGraphicsItem::ItemIsFocusable);
+    setFocus(); // Set focus to the sprite
 }
 
 QRectF Sprite::boundingRect() const
@@ -29,12 +31,37 @@ QPainterPath Sprite::shape() const
     return path;
 }
 
+void Sprite::handleKeyPress(QKeyEvent *event)
+{
+    qreal moveStep = 10; // Adjust the step size as needed
+
+    switch (event->key()) {
+    case Qt::Key_Left:
+        setPos(m_x - moveStep, m_y);
+        break;
+    case Qt::Key_Right:
+        setPos(m_x + moveStep, m_y);
+        break;
+    case Qt::Key_Up:
+        setPos(m_x, m_y - moveStep);
+        break;
+    case Qt::Key_Down:
+        setPos(m_x, m_y + moveStep);
+        break;
+    default:
+        break;
+    }
+
+    emit positionChanged(QPointF(m_x, m_y)); // Emit the signal with the new position
+}
+
 void Sprite::setPos(qreal x, qreal y)
 {
     if (m_x != x || m_y != y) {
         m_x = x;
         m_y = y;
-        emit positionChanged(x, y);
+        setTransformOriginPoint(m_width / 2, m_height / 2); // Set the origin point for correct rotation
+        QGraphicsItem::setPos(x, y);
     }
 }
 

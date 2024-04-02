@@ -3,11 +3,13 @@
 
 #include <QGraphicsItem>
 #include <QObject>
+#include <QKeyEvent>
 
 class Sprite : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
+
 public:
     explicit Sprite(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
 
@@ -24,8 +26,10 @@ public:
     qreal width() const;
     qreal height() const;
 
+    void handleKeyPress(QKeyEvent *event); // New function to handle key events
+
 signals:
-    void positionChanged(qreal x, qreal y);
+    void positionChanged(QPointF newPos); // Changed signal to pass QPointF
 
 private:
     qreal m_x;

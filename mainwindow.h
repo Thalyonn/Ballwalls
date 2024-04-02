@@ -63,9 +63,10 @@ private:
 
     QVector<Worker*> workers;
 
-    void centerSprite();
+    void centerSprite(QPointF newPos);
     void keyPressEvent(QKeyEvent *event) override;
     void setZoomLevel(qreal zoomFactor);
+    bool eventFilter(QObject *obj, QEvent *event);
 
     Sprite *sprite;
 

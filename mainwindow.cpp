@@ -80,6 +80,16 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(upWall);
     scene->addItem(rightWall);
 
+    // Create the sprite
+    sprite = new Sprite(0, 0, 50, 50);
+    scene->addItem(sprite);
+
+    connect(sprite, &Sprite::positionChanged, this, &MainWindow::centerSprite);
+    ui->graphicsView->installEventFilter(this);
+
+    // Set the initial zoom level
+    setZoomLevel(1.0); // 1.0 represents no zoom (100%)
+
     //Create workers
     for (int i = 0; i < threadCount; i++) {
         Worker *w = new Worker();
@@ -87,16 +97,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     manageWorkers();
-
-    // Create the sprite
-    Sprite* sprite = new Sprite(0, 0, 50, 50); // Adjust the size as needed
-    scene->addItem(sprite);
-
-    // Connect the sprite's position change signal to the centering slot
-    connect(sprite, &Sprite::positionChanged, this, &MainWindow::centerSprite);
-
-    // Set the initial zoom level
-    setZoomLevel(1.0); // 1.0 represents no zoom (100%)
 }
 
 
@@ -242,11 +242,20 @@ void MainWindow::on_b3_addBtn_clicked()
     }
 }
 
-void MainWindow::centerSprite()
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    QPointF spritePos = sprite->pos();
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        sprite->handleKeyPress(keyEvent);
+        return true; // Event handled
+    }
+    return QMainWindow::eventFilter(obj, event);
+}
+
+void MainWindow::centerSprite(QPointF newPos)
+{
     QRectF viewRect = ui->graphicsView->mapToScene(ui->graphicsView->rect()).boundingRect();
-    QPointF newViewCenter = spritePos - QPointF(viewRect.width() / 2, viewRect.height() / 2);
+    QPointF newViewCenter = newPos - QPointF(viewRect.width() / 2, viewRect.height() / 2);
     ui->graphicsView->centerOn(newViewCenter);
 }
 
@@ -286,6 +295,4 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         QMainWindow::keyPressEvent(event);
         break;
     }
-
-    centerSprite();
 }
