@@ -33,20 +33,36 @@ QPainterPath Sprite::shape() const
 
 void Sprite::handleKeyPress(QKeyEvent *event)
 {
-    qreal moveStep = 10; // Adjust the step size as needed
+    qreal moveStep = 1; // Adjust the step size as needed
+
+    // Get the current position and size of the sprite
+    qreal currentX = m_x;
+    qreal currentY = m_y;
+    qreal spriteWidth = m_width;
+    qreal spriteHeight = m_height;
+
+    // Define the boundaries
+    qreal leftBoundary = 0;
+    qreal rightBoundary = 1280 - spriteWidth;
+    qreal topBoundary = 0;
+    qreal bottomBoundary = 720 - spriteHeight;
 
     switch (event->key()) {
     case Qt::Key_Left:
-        setPos(m_x - moveStep, m_y);
+        if (currentX - moveStep >= leftBoundary)
+            setPos(m_x - moveStep, m_y);
         break;
     case Qt::Key_Right:
-        setPos(m_x + moveStep, m_y);
+        if (currentX + moveStep <= rightBoundary)
+            setPos(m_x + moveStep, m_y);
         break;
     case Qt::Key_Up:
-        setPos(m_x, m_y - moveStep);
+        if (currentY - moveStep >= topBoundary)
+            setPos(m_x, m_y - moveStep);
         break;
     case Qt::Key_Down:
-        setPos(m_x, m_y + moveStep);
+        if (currentY + moveStep <= bottomBoundary)
+            setPos(m_x, m_y + moveStep);
         break;
     default:
         break;

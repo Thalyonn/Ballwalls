@@ -80,15 +80,18 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(upWall);
     scene->addItem(rightWall);
 
+    // Set the initial zoom level
+    setZoomLevel(37.0); // 1.0 represents no zoom (100%) 37.0 represents client zoom
+
     // Create the sprite
-    sprite = new Sprite(0, 0, 50, 50);
+    sprite = new Sprite(0, 0, 1, 1);
+    // Center sprite
+    QRectF sceneRect = scene->sceneRect();
+    sprite->setPos(sceneRect.center().x() - sprite->width() / 2, sceneRect.center().y() - sprite->height() / 2);
     scene->addItem(sprite);
 
     connect(sprite, &Sprite::positionChanged, this, &MainWindow::centerSprite);
     ui->graphicsView->installEventFilter(this);
-
-    // Set the initial zoom level
-    setZoomLevel(1.0); // 1.0 represents no zoom (100%)
 
     //Create workers
     for (int i = 0; i < threadCount; i++) {
@@ -254,9 +257,15 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 void MainWindow::centerSprite(QPointF newPos)
 {
-    QRectF viewRect = ui->graphicsView->mapToScene(ui->graphicsView->rect()).boundingRect();
-    QPointF newViewCenter = newPos - QPointF(viewRect.width() / 2, viewRect.height() / 2);
-    ui->graphicsView->centerOn(newViewCenter);
+    QRectF sceneRect = scene->sceneRect(); // Get the scene rectangle
+    QRectF viewRect = ui->graphicsView->mapToScene(ui->graphicsView->rect()).boundingRect(); // Get the view rectangle in scene coordinates
+    QPointF viewCenter = viewRect.center(); // Get the center of the view rectangle
+
+    // Calculate the new center position based on the sprite's position and the view center
+    QPointF newCenter = newPos - QPointF(viewCenter.x() - sceneRect.width() / 2, viewCenter.y() - sceneRect.height() / 2);
+
+    // Center the view on the new center position
+    ui->graphicsView->centerOn(newCenter);
 }
 
 void MainWindow::setZoomLevel(qreal zoomFactor)
