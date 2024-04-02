@@ -280,13 +280,9 @@ void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal d
 
     qDebug() << "Adjusting view to sprite. New sprite position:" << newPos;
 
-    // Scaling factors for trial and error adjustment
-    double scaleX = 1; // Example scaling factor, adjust through trial and error
-    double scaleY = 1; // Example scaling factor, adjust through trial and error
-
     // Calculate manual offsets with scaling factors
-    qreal offsetX = (newPos.x() - ui->graphicsView->viewport()->width() / 2.0) * scaleX;
-    qreal offsetY = (newPos.y() - ui->graphicsView->viewport()->height() / 2.0) * scaleY;
+    qreal offsetX = (newPos.x() - ui->graphicsView->viewport()->width() / 2.0) - 8;
+    qreal offsetY = (newPos.y() - ui->graphicsView->viewport()->height() / 2.0) - 8;
 
     // Adjusted new position applying the offsets
     QPointF adjustedNewPos = newPos + QPointF(offsetX, offsetY);
@@ -300,4 +296,3 @@ void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal d
     QPointF newViewCenter = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
     qDebug() << "View centered on adjusted position. New view center in scene coordinates:" << newViewCenter;
 }
-
