@@ -66,6 +66,8 @@ private:
     void centerSprite(QPointF newPos);
     void setZoomLevel(qreal zoomFactor);
     bool eventFilter(QObject *obj, QEvent *event);
+    void adjustView(qreal deltaX, qreal deltaY);
+    void adjustViewToSprite(const QPointF& newPos);
 
     Sprite *sprite;
 

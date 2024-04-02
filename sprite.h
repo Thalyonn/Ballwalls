@@ -27,9 +27,11 @@ public:
     qreal height() const;
 
     void handleKeyPress(QKeyEvent *event); // New function to handle key events
+    void moveBy(qreal dx, qreal dy);
 
 signals:
-    void positionChanged(QPointF newPos); // Changed signal to pass QPointF
+    void spriteMoved(qreal deltaX, qreal deltaY);
+    void positionChanged(const QPointF& newPos);
 
 private:
     qreal m_x;

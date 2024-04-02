@@ -50,25 +50,30 @@ void Sprite::handleKeyPress(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_Left:
         if (currentX - moveStep >= leftBoundary)
-            setPos(m_x - moveStep, m_y);
+            moveBy(-1, 0);
         break;
     case Qt::Key_Right:
         if (currentX + moveStep <= rightBoundary)
-            setPos(m_x + moveStep, m_y);
+            moveBy(1, 0);
         break;
     case Qt::Key_Up:
         if (currentY - moveStep >= topBoundary)
-            setPos(m_x, m_y - moveStep);
+            moveBy(0, -1);
         break;
     case Qt::Key_Down:
         if (currentY + moveStep <= bottomBoundary)
-            setPos(m_x, m_y + moveStep);
+            moveBy(0, 1);
         break;
     default:
         break;
     }
+}
 
-    emit positionChanged(QPointF(m_x, m_y)); // Emit the signal with the new position
+void Sprite::moveBy(qreal dx, qreal dy) {
+    m_x += dx;
+    m_y += dy;
+    QGraphicsItem::moveBy(dx, dy); // Or however you are moving the sprite
+    emit positionChanged(this->pos());
 }
 
 void Sprite::setPos(qreal x, qreal y)
