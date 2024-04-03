@@ -1,4 +1,5 @@
-QT       += core gui
+QT       += core gui\
+        network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,6 +13,8 @@ SOURCES += \
     ball.cpp \
     main.cpp \
     mainwindow.cpp \
+    networkmanager.cpp \
+    sendworker.cpp \
     sprite.cpp \
     wall.cpp \
     scenewindow.cpp \
@@ -20,7 +23,10 @@ SOURCES += \
 HEADERS += \
     ball.h \
     mainwindow.h \
+    networkmanager.h \
+    sendworker.h \
     sprite.h \
+    spriteinfo.h \
     wall.h \
     scenewindow.h \
     worker.h

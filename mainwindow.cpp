@@ -15,7 +15,9 @@
 #include "sprite.h"
 #include <QKeyEvent>
 #include <QScrollBar>
-
+#include "networkmanager.h"
+#include <QVector>
+#include "spriteinfo.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -68,8 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-
-
     Wall *downWall = new Wall(-11, -11, 1291, -11);
     Wall *rightWall = new Wall(1291, -11, 1291, 731);
     Wall *upWall  = new Wall(-11, 731, 1291, 731);
@@ -87,13 +87,22 @@ MainWindow::MainWindow(QWidget *parent)
     setZoomLevel(37.0); // 1.0 represents no zoom (100%) 37.0 represents client zoom
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
+    networkManager = new NetworkManager(this);
+    networkManager->connectToServer();
+
+    connect(networkManager, &NetworkManager::receivedParticles, this, &MainWindow::onReceivedParticles);
+    connect(networkManager, &NetworkManager::receivedSprites, this, &MainWindow::onReceivedSprites);
+    connect(networkManager, &NetworkManager::removedClient, this, &MainWindow::onRemovedClient);
+
     // Create and add the sprite at the center position
-    sprite = new Sprite(centerX, centerY, 1, 1); // Assuming the sprite constructor takes x, y, width, height
+    sprite = new Sprite(centerX, centerY, 1, 1, 99); // Assuming the sprite constructor takes x, y, width, height
     adjustViewToSprite(QPointF(centerX, centerY), 0, 0);
     scene->addItem(sprite);
 
     // Connect sprite movement signal to a slot that adjusts the view
     connect(sprite, &Sprite::positionChanged, this, &MainWindow::adjustViewToSprite);
+    // Tell the server this sprite moved
+    connect(sprite, &Sprite::positionChanged, this, &MainWindow::onSpritePositionChanged);
 
     scene->addItem(sprite);
     ui->graphicsView->installEventFilter(this);
@@ -295,4 +304,63 @@ void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal d
 
     QPointF newViewCenter = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
     qDebug() << "View centered on adjusted position. New view center in scene coordinates:" << newViewCenter;
+}
+
+void MainWindow::onReceivedParticles(const QVector<QPair<int, QPointF>> &particles)
+{
+    // Task 2: On receive particle
+    QMutexLocker locker(&ballsMutex);
+
+    // 1. Get mutex lock to edit QVector<Ball *> balls variable.
+    // (Acquired in QMutexLocker constructor)
+
+    // 2. Add particle/s to the list.
+    for (const QPair<int, QPointF> &particle : particles) {
+        Ball *ball = new Ball(particle.second.x(), particle.second.y(), /* speed, direction */);
+        balls.append(ball);
+        scene->addItem(ball);
+    }
+
+    // 3. Release lock.
+    // (QMutexLocker destructor will release the lock)
+}
+
+void MainWindow::onReceivedSprites(const QVector<SpriteInfo> &sprites)
+{
+    // Task 3: On receive sprite
+    QMutexLocker locker(&spritesMutex);
+
+    // 1. Get mutex lock to edit QVector<Sprite *> sprites variable.
+    // (Acquired in QMutexLocker constructor)
+
+    // 2. Add sprite/s to the list.
+    for (const SpriteInfo &sprite : sprites) {
+        Sprite *spriteItem = new Sprite(sprite.position.x, sprite.position.y, sprite.width, sprite.height, sprite.id);
+        this->sprites.append(spriteItem);
+        scene->addItem(spriteItem);
+    }
+
+    // 3. Release lock.
+    // (QMutexLocker destructor will release the lock)
+}
+
+void MainWindow::onSpritePositionChanged(const QPointF &newPos, qreal deltaX, qreal deltaY)
+{
+    // Task 4: On move own client sprite
+    networkManager->sendMovement(newPos);
+}
+
+void MainWindow::onRemovedClient(int clientId)
+{
+    QMutexLocker locker(&spritesMutex);
+
+    // Find the sprite with the given client ID and remove it
+    for (int i = 0; i < sprites.size(); ++i) {
+        if (sprites[i]->getClientId() == clientId) {
+            Sprite *sprite = sprites.takeAt(i);
+            scene->removeItem(sprite);
+            delete sprite;
+            break;
+        }
+    }
 }

@@ -10,6 +10,7 @@
 #include "scenewindow.h"
 #include "worker.h"
 #include "sprite.h"
+#include "networkmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -40,6 +41,9 @@ private slots:
     void manageWorkers();
     void manageRenderThread();
 
+    void onReceivedParticles(const QVector<QPair<int, QPointF>> &particles);
+    void onReceivedSprites(const QVector<SpriteInfo> &sprites);
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 
@@ -59,7 +63,10 @@ private:
     QQueue<QThread*> threadPool;
     QThread *workThread;
     QVector<Ball*> balls;
-
+    NetworkManager *networkManager;
+    QVector<Sprite *> sprites;
+    QMutex ballsMutex;
+    QMutex spritesMutex;
 
     QVector<Worker*> workers;
 
@@ -68,6 +75,5 @@ private:
     void adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal delaY);
 
     Sprite *sprite;
-
 };
 #endif // MAINWINDOW_H

@@ -11,7 +11,7 @@ class Sprite : public QObject, public QGraphicsItem
     Q_INTERFACES(QGraphicsItem)
 
 public:
-    explicit Sprite(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
+    explicit Sprite(qreal x, qreal y, qreal width, qreal height, int clientId, QGraphicsItem *parent = nullptr);
 
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -26,8 +26,10 @@ public:
     qreal width() const;
     qreal height() const;
 
-    void handleKeyPress(QKeyEvent *event); // New function to handle key events
+    void handleKeyPress(QKeyEvent *event);
     void moveBy(qreal dx, qreal dy);
+
+    int getClientId() const;
 
 signals:
     void spriteMoved(qreal deltaX, qreal deltaY);
@@ -39,6 +41,7 @@ private:
     qreal m_width;
     qreal m_height;
     qreal m_direction;
+    int m_clientId;
 };
 
 #endif // SPRITE_H

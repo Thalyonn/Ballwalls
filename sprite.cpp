@@ -3,8 +3,8 @@
 #include <QStyleOption>
 #include <QKeyEvent>
 
-Sprite::Sprite(qreal x, qreal y, qreal width, qreal height, QGraphicsItem *parent)
-    : QGraphicsItem(parent), m_x(x), m_y(y), m_width(width), m_height(height), m_direction(0)
+Sprite::Sprite(qreal x, qreal y, qreal width, qreal height, int clientId, QGraphicsItem *parent)
+    : QGraphicsItem(parent), m_x(x), m_y(y), m_width(width), m_height(height), m_direction(0), m_clientId(clientId)
 {
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus(); // Set focus to the sprite
@@ -109,4 +109,9 @@ qreal Sprite::width() const
 qreal Sprite::height() const
 {
     return m_height;
+}
+
+int Sprite::getClientId() const
+{
+    return m_clientId;
 }
