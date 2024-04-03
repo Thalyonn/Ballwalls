@@ -65,7 +65,18 @@ void NetworkManager::parseMessage(const QByteArray &data)
     if (command == "INITIAL_DATA") {
         // Handle initial data
     } else if (command == "C") {
+        QVector<QPair<int, QPointF>> sprites;
+        QStringList spriteData = payload.split(';');
 
+        for (const QString &spriteStr : spriteData) {
+            QStringList spriteValues = spriteStr.split(',');
+            if (spriteValues.size() == 3) {
+                int id = spriteValues[0].toInt();
+                qreal x = spriteValues[1].toDouble();
+                qreal y = spriteValues[2].toDouble();
+                sprites.append(qMakePair(id, QPointF(x, y)));
+            }
+        }
 
         emit receivedSprites(sprites);
     } else if (command == "P") {

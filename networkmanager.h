@@ -2,6 +2,7 @@
 #define NETWORKMANAGER_H
 
 #include "sendworker.h"
+#include "particleinfo.h"
 
 class NetworkManager : public QObject
 {
@@ -14,7 +15,7 @@ public:
     void sendMovement(const QPointF &position);
 
 signals:
-    void receivedParticles(const QVector<QPair<int, QPointF>> &particles);
+    void receivedParticles(const QVector<ParticleInfo> &particles);
     void receivedSprites(const QVector<QPair<int, QPointF>> &sprites);
     void removedClient(int clientId);
 

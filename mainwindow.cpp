@@ -334,8 +334,8 @@ void MainWindow::onReceivedSprites(const QVector<QPair<int, QPointF>> &sprites)
     // (Acquired in QMutexLocker constructor)
 
     // 2. Add sprite/s to the list.
-    for (const ParticleInfo &sprite : sprites) {
-        Sprite *spriteItem = new Sprite(sprite.position.x, sprite.position.y, sprite.velocity, sprite.angle, sprite.id);
+    for (const QPair<int, QPointF> &sprite : sprites) {
+        Sprite *spriteItem = new Sprite(sprite.second.x(), sprite.second.y(), 1, 1, sprite.first);
         this->sprites.append(spriteItem);
         scene->addItem(spriteItem);
     }
