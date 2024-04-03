@@ -41,8 +41,8 @@ private slots:
     void manageWorkers();
     void manageRenderThread();
 
-    void onReceivedParticles(const QVector<QPair<int, QPointF>> &particles);
-    void onReceivedSprites(const QVector<SpriteInfo> &sprites);
+    void onReceivedParticles(const QVector<ParticleInfo> &particles);
+    void onReceivedSprites(const QVector<QPair<int, QPointF>> &sprites);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

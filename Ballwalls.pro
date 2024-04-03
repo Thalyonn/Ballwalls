@@ -24,9 +24,9 @@ HEADERS += \
     ball.h \
     mainwindow.h \
     networkmanager.h \
+    particleinfo.h \
     sendworker.h \
     sprite.h \
-    spriteinfo.h \
     wall.h \
     scenewindow.h \
     worker.h

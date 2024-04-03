@@ -7,7 +7,7 @@
 class Ball : public QGraphicsItem
 {
 public:
-    Ball(qreal pxPos, qreal pyPos, qreal speed, qreal direction);
+    Ball(qreal pxPos, qreal pyPos, qreal speed, qreal direction, int m_clientId);
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -19,12 +19,16 @@ public:
     void updatePosition();
     void render();
 
+    int getClientId() const;
+
 private:
     qreal xPos;
     qreal yPos;
 
     qreal dir;
     double radDir;
+
+    int m_clientId;
 
 protected slots:
     void advance(int phase) override;

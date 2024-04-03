@@ -1,7 +1,7 @@
 #include "networkmanager.h"
 #include <QStringList>
 #include <QVector>
-#include "spriteinfo.h"
+#include "particleinfo.h"
 
 NetworkManager::NetworkManager(QObject *parent)
     : QObject(parent), socket(nullptr), receiveThread(nullptr), sendThread(nullptr), sendWorker(nullptr)
@@ -65,27 +65,12 @@ void NetworkManager::parseMessage(const QByteArray &data)
     if (command == "INITIAL_DATA") {
         // Handle initial data
     } else if (command == "C") {
-        // Parse sprite positions
-        QVector<SpriteInfo> sprites;
-        QStringList spriteData = payload.split(';');
 
-        for (const QString &spriteStr : spriteData) {
-            QStringList spriteValues = spriteStr.split(',');
-            if (spriteValues.size() == 5) {
-                int id = spriteValues[0].toInt();
-                qreal x = spriteValues[1].toDouble();
-                qreal y = spriteValues[2].toDouble();
-                qreal velocity = spriteValues[3].toDouble();
-                qreal angle = spriteValues[4].toDouble();
-
-                sprites.append(SpriteInfo(id, x, y, velocity, angle));
-            }
-        }
 
         emit receivedSprites(sprites);
     } else if (command == "P") {
         // Parse particle positions
-        QVector<QPair<int, QPointF>> particles;
+        QVector<ParticleInfo> particles;
         QStringList particleData = payload.split(';');
 
         for (const QString &particleStr : particleData) {
@@ -94,7 +79,9 @@ void NetworkManager::parseMessage(const QByteArray &data)
                 int id = particleValues[0].toInt();
                 qreal x = particleValues[1].toDouble();
                 qreal y = particleValues[2].toDouble();
-                particles.append(qMakePair(id, QPointF(x, y)));
+                qreal velocity = particleValues[3].toDouble();
+                qreal angle = particleValues[4].toDouble();
+                particles.append(ParticleInfo(id, x, y, velocity, angle));
             }
         }
 

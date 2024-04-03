@@ -9,7 +9,7 @@
 #include "qthread.h"
 #include "QThreadPool"
 
-Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
+Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir, int clientId) {
     //xPos and yPos are only the initial positions to set
     xPos = pxPos;
     yPos = pyPos;
@@ -19,6 +19,7 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir) {
     //Vectors
     vx = qCos(radDir);
     vy = qSin(radDir);
+    m_clientId = clientId;
 
 }
 
@@ -122,4 +123,9 @@ void Ball::changeDir(qreal angle)
 
 qreal Ball::getDir() {
     return dir;
+}
+
+int Ball::getClientId() const
+{
+    return m_clientId;
 }

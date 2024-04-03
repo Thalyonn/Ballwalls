@@ -17,7 +17,7 @@
 #include <QScrollBar>
 #include "networkmanager.h"
 #include <QVector>
-#include "spriteinfo.h"
+#include "particleinfo.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -306,7 +306,7 @@ void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal d
     qDebug() << "View centered on adjusted position. New view center in scene coordinates:" << newViewCenter;
 }
 
-void MainWindow::onReceivedParticles(const QVector<QPair<int, QPointF>> &particles)
+void MainWindow::onReceivedParticles(const QVector<ParticleInfo> &particles)
 {
     // Task 2: On receive particle
     QMutexLocker locker(&ballsMutex);
@@ -315,8 +315,8 @@ void MainWindow::onReceivedParticles(const QVector<QPair<int, QPointF>> &particl
     // (Acquired in QMutexLocker constructor)
 
     // 2. Add particle/s to the list.
-    for (const QPair<int, QPointF> &particle : particles) {
-        Ball *ball = new Ball(particle.second.x(), particle.second.y(), /* speed, direction */);
+    for (const ParticleInfo &particle : particles) {
+        Ball *ball = new Ball(particle.position.x, particle.position.y, particle.velocity, particle.angle, particle.id);
         balls.append(ball);
         scene->addItem(ball);
     }
@@ -325,7 +325,7 @@ void MainWindow::onReceivedParticles(const QVector<QPair<int, QPointF>> &particl
     // (QMutexLocker destructor will release the lock)
 }
 
-void MainWindow::onReceivedSprites(const QVector<SpriteInfo> &sprites)
+void MainWindow::onReceivedSprites(const QVector<QPair<int, QPointF>> &sprites)
 {
     // Task 3: On receive sprite
     QMutexLocker locker(&spritesMutex);
@@ -334,8 +334,8 @@ void MainWindow::onReceivedSprites(const QVector<SpriteInfo> &sprites)
     // (Acquired in QMutexLocker constructor)
 
     // 2. Add sprite/s to the list.
-    for (const SpriteInfo &sprite : sprites) {
-        Sprite *spriteItem = new Sprite(sprite.position.x, sprite.position.y, sprite.width, sprite.height, sprite.id);
+    for (const ParticleInfo &sprite : sprites) {
+        Sprite *spriteItem = new Sprite(sprite.position.x, sprite.position.y, sprite.velocity, sprite.angle, sprite.id);
         this->sprites.append(spriteItem);
         scene->addItem(spriteItem);
     }
