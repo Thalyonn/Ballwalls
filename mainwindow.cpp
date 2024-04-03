@@ -316,10 +316,8 @@ void MainWindow::onReceivedParticles(const QVector<ParticleInfo> &particles)
 
     // 2. Add particle/s to the list.
     for (const ParticleInfo &particle : particles) {
-        Ball *ball = new Ball(particle.position.x(), particle.position.y(), particle.velocity, particle.angle, particle.id);
         //qDebug() << "Ball Added at:" << ball;
-        balls.append(ball);
-        scene->addItem(ball);
+        addBall(particle.position.x(), particle.position.y(), particle.velocity, particle.angle);
     }
 
     // 3. Release lock.

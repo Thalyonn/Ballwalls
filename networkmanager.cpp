@@ -128,7 +128,17 @@ void NetworkManager::parseMessage(const QByteArray &data)
                 particles.append(ParticleInfo(id, x, y, velocity, angle));
             }
         }
-        qDebug() << "Particle Received. Emitting:" << particleData;
+
+        QString result;
+        for (const ParticleInfo& particle : particles) {
+            result += QString("ID: %1, Position: (%2, %3), Velocity: %4, Angle: %5")
+                          .arg(particle.id)
+                          .arg(particle.position.x())
+                          .arg(particle.position.y())
+                          .arg(particle.velocity)
+                          .arg(particle.angle);
+        }
+        qDebug() << "Particle Received. Emitting:" << result;
 
         emit receivedParticles(particles);
     } else if (command == "DISCONNECTED_CLIENT") {
