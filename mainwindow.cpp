@@ -165,7 +165,7 @@ void MainWindow::manageRenderThread() {
 
 void MainWindow::addBall(qreal x, qreal y, qreal speed, qreal dir) {
     //Distribute it to a thread
-    Ball *ball = new Ball(x/2, y/2, speed, dir);
+    Ball *ball = new Ball(x/2, y/2, speed, dir, 0);
     balls.append(ball);
     scene->addItem(ball);
     workers[current]->addBall(ball);
@@ -316,7 +316,7 @@ void MainWindow::onReceivedParticles(const QVector<ParticleInfo> &particles)
 
     // 2. Add particle/s to the list.
     for (const ParticleInfo &particle : particles) {
-        Ball *ball = new Ball(particle.position.x, particle.position.y, particle.velocity, particle.angle, particle.id);
+        Ball *ball = new Ball(particle.position.x(), particle.position.y(), particle.velocity, particle.angle, particle.id);
         balls.append(ball);
         scene->addItem(ball);
     }

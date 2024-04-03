@@ -13,6 +13,7 @@ public:
     ~NetworkManager();
 
     void sendMovement(const QPointF &position);
+    void connectToServer();
 
 signals:
     void receivedParticles(const QVector<ParticleInfo> &particles);

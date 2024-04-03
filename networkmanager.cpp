@@ -2,6 +2,7 @@
 #include <QStringList>
 #include <QVector>
 #include "particleinfo.h"
+#include <QThread>
 
 NetworkManager::NetworkManager(QObject *parent)
     : QObject(parent), socket(nullptr), receiveThread(nullptr), sendThread(nullptr), sendWorker(nullptr)

@@ -43,6 +43,8 @@ private slots:
 
     void onReceivedParticles(const QVector<ParticleInfo> &particles);
     void onReceivedSprites(const QVector<QPair<int, QPointF>> &sprites);
+    void onRemovedClient(int clientId);
+    void onSpritePositionChanged(const QPointF &newPos, qreal deltaX, qreal deltaY);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
