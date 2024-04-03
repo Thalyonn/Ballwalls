@@ -287,7 +287,7 @@ void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal d
         ui->graphicsView->show(); // Show the widget if it's hidden
     }
 
-    qDebug() << "Adjusting view to sprite. New sprite position:" << newPos;
+    //qDebug() << "New sprite position:" << newPos;
 
     // Calculate manual offsets with scaling factors
     qreal offsetX = (newPos.x() - ui->graphicsView->viewport()->width() / 2.0) - 8;
@@ -303,7 +303,7 @@ void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal d
     ui->graphicsView->viewport()->update();
 
     QPointF newViewCenter = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
-    qDebug() << "View centered on adjusted position. New view center in scene coordinates:" << newViewCenter;
+    qDebug() << "View Coords:" << newViewCenter;
 }
 
 void MainWindow::onReceivedParticles(const QVector<ParticleInfo> &particles)
@@ -317,6 +317,7 @@ void MainWindow::onReceivedParticles(const QVector<ParticleInfo> &particles)
     // 2. Add particle/s to the list.
     for (const ParticleInfo &particle : particles) {
         Ball *ball = new Ball(particle.position.x(), particle.position.y(), particle.velocity, particle.angle, particle.id);
+        //qDebug() << "Ball Added at:" << ball;
         balls.append(ball);
         scene->addItem(ball);
     }

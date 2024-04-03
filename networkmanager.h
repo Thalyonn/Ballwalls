@@ -3,6 +3,7 @@
 
 #include "sendworker.h"
 #include "particleinfo.h"
+#include <QTcpSocket>
 
 class NetworkManager : public QObject
 {
@@ -21,16 +22,17 @@ signals:
     void removedClient(int clientId);
 
 private slots:
-    void readPendingDatagrams();
+    void readSocket();
 
 private:
-    QUdpSocket *socket;
+    QTcpSocket *socket;
     QThread *receiveThread;
     QThread *sendThread;
     SendWorker *sendWorker;
     QMutex mutex;
 
     void parseMessage(const QByteArray &data);
+    void handleSocketStateChange(QAbstractSocket::SocketState socketState);
 };
 
 #endif // NETWORKMANAGER_H
