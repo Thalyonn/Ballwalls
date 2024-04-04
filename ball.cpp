@@ -14,7 +14,7 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir, int clientId) {
     xPos = pxPos;
     yPos = pyPos;
     speed = pSpeed;
-    dir = pDir;
+    dir = -pDir;
     radDir = qDegreesToRadians(dir);
     //Vectors
     vx = qCos(radDir);
@@ -75,8 +75,8 @@ void Ball::advance(int phase)
 
 
     //apply the position to be used in the graphic view
-    xPos = xPos + dx;
-    yPos = yPos + dy;
+    xPos = xPos + (dx * 0.016);
+    yPos = yPos + (dy * 0.016);
 
 }
 
@@ -106,8 +106,8 @@ void Ball::updatePosition() {
 
 
     //apply the position to be used in the graphic view
-    xPos = xPos + dx;
-    yPos = yPos + dy;
+    xPos = xPos + (dx * 0.016);
+    yPos = yPos + (dy * 0.016);
 }
 
 void Ball::render() {
