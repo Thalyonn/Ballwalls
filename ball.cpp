@@ -8,11 +8,12 @@
 #include "QRunnable"
 #include "qthread.h"
 #include "QThreadPool"
+#include <cmath>
 
 Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir, int clientId) {
     //xPos and yPos are only the initial positions to set
     xPos = pxPos;
-    yPos = pyPos;
+    yPos = std::abs(360 - pyPos);
     speed = pSpeed;
     dir = -pDir;
     radDir = qDegreesToRadians(dir);
