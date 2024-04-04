@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->graphicsView->setFixedSize(1282, 722);
     ui->graphicsView->setRenderHint(QPainter::Antialiasing, true);
 
-    ui->graphicsView->setSceneRect(0, 0, 1280, 720);
+    ui->graphicsView->setSceneRect(0, 0, 1300, 740);
 
     ui->graphicsView->setCacheMode(QGraphicsView::CacheNone);
     //ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
