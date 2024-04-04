@@ -4,9 +4,11 @@
 #include "particleinfo.h"
 #include <QThread>
 #include <QTcpSocket>
+#include <cmath>
+#include "sprite.h"
 
-NetworkManager::NetworkManager(QObject *parent)
-    : QObject(parent), socket(nullptr), receiveThread(nullptr)
+NetworkManager::NetworkManager(QObject *parent, const QVector<Sprite *> &spritesRef)
+    : QObject(parent), socket(nullptr), receiveThread(nullptr), sprites(spritesRef)
 {
 }
 
@@ -72,6 +74,7 @@ void NetworkManager::sendMessage(const QByteArray &message)
 
 void NetworkManager::sendMovement(const QPointF &position)
 {
+    //QByteArray data = QString("MOVE:%1,%2").arg(position.x()).arg(std::abs(360 - position.y())).toUtf8();
     QByteArray data = QString("MOVE:%1,%2").arg(position.x()).arg(position.y()).toUtf8();
     sendMessage(data);
 }
@@ -99,7 +102,19 @@ void NetworkManager::parseMessage(const QByteArray &data)
                 int id = spriteValues[0].toInt();
                 qreal x = spriteValues[1].toDouble();
                 qreal y = spriteValues[2].toDouble();
-                sprites.append(qMakePair(id, QPointF(x, y)));
+
+                bool spriteExists = false;
+                for (auto& sprite : this->sprites) {
+                    if (sprite->getClientId() == id) {
+                        sprite->setPos(x, y);
+                        spriteExists = true;
+                        break;
+                    }
+                }
+
+                if (!spriteExists) {
+                    sprites.append(qMakePair(id, QPointF(x, y)));
+                }
             }
         }
 
