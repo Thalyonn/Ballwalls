@@ -14,7 +14,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     networkmanager.cpp \
-    sendworker.cpp \
     sprite.cpp \
     wall.cpp \
     scenewindow.cpp \
@@ -25,7 +24,6 @@ HEADERS += \
     mainwindow.h \
     networkmanager.h \
     particleinfo.h \
-    sendworker.h \
     sprite.h \
     wall.h \
     scenewindow.h \

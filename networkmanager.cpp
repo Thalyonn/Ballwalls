@@ -6,7 +6,7 @@
 #include <QTcpSocket>
 
 NetworkManager::NetworkManager(QObject *parent)
-    : QObject(parent), socket(nullptr), receiveThread(nullptr), sendThread(nullptr), sendWorker(nullptr)
+    : QObject(parent), socket(nullptr), receiveThread(nullptr)
 {
 }
 
@@ -17,32 +17,21 @@ NetworkManager::~NetworkManager()
         receiveThread->wait();
     }
 
-    if (sendThread && sendThread->isRunning()) {
-        sendThread->quit();
-        sendThread->wait();
-    }
-
     delete receiveThread;
-    delete sendThread;
     delete socket;
-    delete sendWorker;
 }
 
 void NetworkManager::connectToServer()
 {
     socket = new QTcpSocket(this);
     receiveThread = new QThread(this);
-    sendThread = new QThread(this);
-    sendWorker = new SendWorker();
 
     connect(socket, &QTcpSocket::readyRead, this, &NetworkManager::readSocket);
     connect(socket, &QTcpSocket::stateChanged, this, &NetworkManager::handleSocketStateChange);
 
     socket->moveToThread(receiveThread);
-    sendWorker->moveToThread(sendThread);
 
     receiveThread->start();
-    sendThread->start();
 
     // Connect to the server
     socket->connectToHost(QHostAddress::LocalHost, 12345);
@@ -74,10 +63,17 @@ void NetworkManager::handleSocketStateChange(QAbstractSocket::SocketState socket
         break;
     }
 }
+
+void NetworkManager::sendMessage(const QByteArray &message)
+{
+    socket->write(message);
+    socket->flush();
+}
+
 void NetworkManager::sendMovement(const QPointF &position)
 {
     QByteArray data = QString("MOVE:%1,%2").arg(position.x()).arg(position.y()).toUtf8();
-    sendWorker->sendMessage(data);
+    sendMessage(data);
 }
 
 void NetworkManager::parseMessage(const QByteArray &data)

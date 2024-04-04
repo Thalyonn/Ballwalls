@@ -1,9 +1,9 @@
 #ifndef NETWORKMANAGER_H
 #define NETWORKMANAGER_H
 
-#include "sendworker.h"
 #include "particleinfo.h"
 #include <QTcpSocket>
+#include <QMutex>
 
 class NetworkManager : public QObject
 {
@@ -27,12 +27,11 @@ private slots:
 private:
     QTcpSocket *socket;
     QThread *receiveThread;
-    QThread *sendThread;
-    SendWorker *sendWorker;
     QMutex mutex;
 
     void parseMessage(const QByteArray &data);
     void handleSocketStateChange(QAbstractSocket::SocketState socketState);
+    void sendMessage(const QByteArray &message);
 };
 
 #endif // NETWORKMANAGER_H
