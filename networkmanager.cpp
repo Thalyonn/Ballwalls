@@ -93,9 +93,7 @@ void NetworkManager::parseMessage(const QByteArray &data)
     QString command = parts[0];
     QString payload = parts[1];
 
-    if (command == "INITIAL_DATA") {
-        // Handle initial data
-    } else if (command == "C") {
+    if (command == "C") {
         QVector<QPair<int, QPointF>> sprites;
         QStringList spriteData = payload.split(';');
 
