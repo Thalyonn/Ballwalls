@@ -18,6 +18,7 @@ public:
     QPainterPath shape() const override;
 
     void setPos(qreal x, qreal y);
+    void setPosWithRepaint(qreal x, qreal y);
     QPointF pos() const;
 
     void setDirection(qreal angle);

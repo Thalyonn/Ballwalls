@@ -86,6 +86,13 @@ void Sprite::setPos(qreal x, qreal y)
     }
 }
 
+void Sprite::setPosWithRepaint(qreal x, qreal y)
+{
+    m_x = x;
+    m_y = y;
+    QGraphicsItem::setPos(x, y);
+}
+
 QPointF Sprite::pos() const
 {
     return QPointF(m_x, m_y);

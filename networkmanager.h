@@ -11,7 +11,6 @@ class NetworkManager : public QObject
     Q_OBJECT
 
 public:
-    NetworkManager(QObject *parent = nullptr);
     NetworkManager(QObject *parent, const QVector<Sprite *> &spritesRef);
     ~NetworkManager();
 
