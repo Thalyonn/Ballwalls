@@ -21,6 +21,8 @@ Ball::Ball(qreal pxPos, qreal pyPos, qreal pSpeed, qreal pDir, int clientId) {
     vy = qSin(radDir);
     m_clientId = clientId;
 
+    deltaTime = 0.0085;
+
 }
 
 QRectF Ball::boundingRect() const
@@ -75,8 +77,8 @@ void Ball::advance(int phase)
 
 
     //apply the position to be used in the graphic view
-    xPos = xPos + (dx * 0.016);
-    yPos = yPos + (dy * 0.016);
+    xPos = xPos + (dx * deltaTime);
+    yPos = yPos + (dy * deltaTime);
 
 }
 
@@ -106,8 +108,8 @@ void Ball::updatePosition() {
 
 
     //apply the position to be used in the graphic view
-    xPos = xPos + (dx * 0.016);
-    yPos = yPos + (dy * 0.016);
+    xPos = xPos + (dx * deltaTime);
+    yPos = yPos + (dy * deltaTime);
 }
 
 void Ball::render() {

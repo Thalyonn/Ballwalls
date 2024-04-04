@@ -30,6 +30,8 @@ private:
 
     int m_clientId;
 
+    qreal deltaTime;
+
 protected slots:
     void advance(int phase) override;
 
