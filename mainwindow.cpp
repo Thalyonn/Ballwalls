@@ -79,10 +79,6 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(upWall);
     scene->addItem(rightWall);
 
-    // Calculate the center position of the transformed view
-    qreal centerX = ui->graphicsView->width()/ 2.0;
-    qreal centerY = ui->graphicsView->height() / 2.0;
-
     // Set the initial zoom level
     setZoomLevel(37.0); // 1.0 represents no zoom (100%) 37.0 represents client zoom
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
@@ -94,15 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(networkManager, &NetworkManager::receivedSprites, this, &MainWindow::onReceivedSprites);
     connect(networkManager, &NetworkManager::removedClient, this, &MainWindow::onRemovedClient);
 
-    // Create and add the sprite at the center position
-    sprite = new Sprite(centerX, centerY, 1, 1, 99); // Assuming the sprite constructor takes x, y, width, height
-    adjustViewToSprite(QPointF(centerX, centerY), 0, 0);
-    scene->addItem(sprite);
-
-    // Connect sprite movement signal to a slot that adjusts the view
-    connect(sprite, &Sprite::positionChanged, this, &MainWindow::adjustViewToSprite);
-    // Tell the server this sprite moved
-    connect(sprite, &Sprite::positionChanged, this, &MainWindow::onSpritePositionChanged);
+    connect(networkManager, &NetworkManager::assignedId, this, &MainWindow::onAssignedId);
 
     ui->graphicsView->installEventFilter(this);
 
@@ -364,4 +352,21 @@ void MainWindow::onRemovedClient(int clientId)
             break;
         }
     }
+}
+
+void MainWindow::onAssignedId(int id) {
+    // Calculate the center position of the transformed view
+    qreal centerX = ui->graphicsView->width()/ 2.0;
+    qreal centerY = ui->graphicsView->height() / 2.0;
+
+    // set up this client's sprite and listeners
+    // Create and add the sprite at the center position
+    sprite = new Sprite(centerX, centerY, 1, 1, id); // Assuming the sprite constructor takes x, y, width, height
+    adjustViewToSprite(QPointF(centerX, centerY), 0, 0);
+    scene->addItem(sprite);
+
+    // Connect sprite movement signal to a slot that adjusts the view
+    connect(sprite, &Sprite::positionChanged, this, &MainWindow::adjustViewToSprite);
+    // Tell the server this sprite moved
+    connect(sprite, &Sprite::positionChanged, this, &MainWindow::onSpritePositionChanged);
 }

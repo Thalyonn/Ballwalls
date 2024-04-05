@@ -46,6 +46,8 @@ private slots:
     void onRemovedClient(int clientId);
     void onSpritePositionChanged(const QPointF &newPos, qreal deltaX, qreal deltaY);
 
+    void onAssignedId(int id);
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 

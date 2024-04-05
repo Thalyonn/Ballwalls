@@ -21,6 +21,7 @@ signals:
     void receivedParticles(const QVector<ParticleInfo> &particles);
     void receivedSprites(const QVector<QPair<int, QPointF>> &sprites);
     void removedClient(int clientId);
+    void assignedId(int id);
 
 private slots:
     void readSocket();

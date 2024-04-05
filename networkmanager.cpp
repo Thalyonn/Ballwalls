@@ -155,6 +155,10 @@ void NetworkManager::parseMessage(const QByteArray &data)
         // Remove the disconnected client's sprite
         int clientId = payload.toInt();
         emit removedClient(clientId);
+    } else if (command == "ID") {
+        // This is the client's assigned ID
+        int id = payload.toInt();
+        emit assignedId(id);
     }
 }
 
