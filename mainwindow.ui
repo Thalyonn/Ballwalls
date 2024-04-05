@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,9 +13,6 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="animated">
-   <bool>true</bool>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
@@ -29,6 +23,626 @@
       <height>722</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>1310</x>
+      <y>50</y>
+      <width>221</width>
+      <height>601</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Add Object Buttons</string>
+    </property>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>201</width>
+       <height>291</height>
+      </rect>
+     </property>
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tabSingle">
+      <attribute name="title">
+       <string>Single</string>
+      </attribute>
+      <widget class="QSpinBox" name="ballX">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>91</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>X: </string>
+       </property>
+       <property name="maximum">
+        <number>1280</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="ballY">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>91</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Y: </string>
+       </property>
+       <property name="maximum">
+        <number>720</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="ballSpeed">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>91</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Speed: </string>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="ballAngle">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>111</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Angle: </string>
+       </property>
+       <property name="maximum">
+        <number>360</number>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ballAddBtn">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="batch1">
+      <attribute name="title">
+       <string>B1</string>
+      </attribute>
+      <widget class="QSpinBox" name="b1_count">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>111</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Count: </string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b1_x1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>X1: </string>
+       </property>
+       <property name="maximum">
+        <number>1280</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b1_y1">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>60</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Y1: </string>
+       </property>
+       <property name="maximum">
+        <number>720</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b1_x2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>X2: </string>
+       </property>
+       <property name="maximum">
+        <number>1280</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b1_y2">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>90</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Y2: </string>
+       </property>
+       <property name="maximum">
+        <number>720</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b1_speed">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>111</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Speed: </string>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>131</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Add Balls Along Line</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="b1_addBtn">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>190</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b1_angle">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>111</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Angle: </string>
+       </property>
+       <property name="maximum">
+        <number>359</number>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="batch2">
+      <attribute name="title">
+       <string>B2</string>
+      </attribute>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>141</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Add Balls Along Angle</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b2_count">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>111</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Count: </string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b2_x">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>X: </string>
+       </property>
+       <property name="maximum">
+        <number>1280</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b2_y">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>60</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Y: </string>
+       </property>
+       <property name="maximum">
+        <number>720</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b2_angle1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>101</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Angle 1: </string>
+       </property>
+       <property name="maximum">
+        <number>359</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b2_angle2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>101</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Angle 2: </string>
+       </property>
+       <property name="maximum">
+        <number>359</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b2_speed">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>101</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Speed: </string>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="b2_addBtn">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>180</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="batch3">
+      <attribute name="title">
+       <string>B3</string>
+      </attribute>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>151</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Add Balls Along Speed</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b3_count">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>111</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Count: </string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b3_x">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>X: </string>
+       </property>
+       <property name="maximum">
+        <number>1280</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b3_y">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>60</y>
+         <width>81</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Y: </string>
+       </property>
+       <property name="maximum">
+        <number>720</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b3_angle">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>101</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Angle: </string>
+       </property>
+       <property name="maximum">
+        <number>359</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b3_speed1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>101</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Speed 1: </string>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="b3_speed2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>101</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="prefix">
+        <string>Speed 2: </string>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="b3_addBtn">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>180</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>360</y>
+       <width>201</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Add Wall</string>
+     </property>
+     <widget class="QPushButton" name="wallAddBtn">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>160</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="wallX1">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>81</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="prefix">
+       <string>X1:</string>
+      </property>
+      <property name="maximum">
+       <number>1280</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="wallY1">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>40</y>
+        <width>81</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="prefix">
+       <string>Y1:</string>
+      </property>
+      <property name="maximum">
+       <number>720</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="wallX2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>81</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="prefix">
+       <string>X2:</string>
+      </property>
+      <property name="maximum">
+       <number>1280</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="wallY2">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>90</y>
+        <width>81</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="prefix">
+       <string>Y2:</string>
+      </property>
+      <property name="maximum">
+       <number>720</number>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add Ball(s)</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -60,7 +674,7 @@
      <x>0</x>
      <y>0</y>
      <width>1550</width>
-     <height>36</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
