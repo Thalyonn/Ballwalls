@@ -1,5 +1,5 @@
-![image](https://github.com/Thalyonn/Ballwalls/assets/91253896/721070ed-ebc6-441c-b767-e4eca12a39e0)# Problem Set 1
-Daniel Capinpin, Dale Gregorio
+![image](https://github.com/Thalyonn/Ballwalls/assets/91253896/721070ed-ebc6-441c-b767-e4eca12a39e0)# Problem Set 3
+Daniel Capinpin, Dale Gregorio, Andrei Chua, Audric Ang
 
 To compile, use and download [QT Creator community edition](https://www.qt.io/download-open-source).
 1. Follow installation instructions listed in here https://doc.qt.io/qt-6/get-and-install-qt.html.
@@ -13,14 +13,9 @@ To compile, use and download [QT Creator community edition](https://www.qt.io/do
    ![image](https://github.com/Thalyonn/Ballwalls/assets/91253896/acfccb84-e924-4b18-994f-940409edd025)
 
 # General Usage
-1. When using the app, you can spawn individual balls along an X and Y coordinate
-2. Enter the speed variable with speeds from 1 to 6 (Note: higher speeds can cause tunneling)
-3. Enter an angle value
+1. Use the arrow keys to move your sprite
+2. If you want to open more clients, open another instance of Qt Creator, open the project, then press "run" again 
 
-# Other Spawning Options
-There are other spawning options including Adding Balls along A Line, Adding Balls along Angle, and Adding Balls along speed. These are selectable as B1, B2, and B3 respectively and allow multiple balls to spawn at once with different conditions through a start and end range.
-
-The user also has the option to spawn walls by giving a start (X, Y) coordinate, and an end coordinate.
 
 
 ## License
