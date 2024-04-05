@@ -292,7 +292,7 @@ void MainWindow::adjustViewToSprite(const QPointF& newPos, qreal deltaX, qreal d
     ui->graphicsView->viewport()->update();
 
     QPointF newViewCenter = ui->graphicsView->mapToScene(ui->graphicsView->viewport()->rect().center());
-    qDebug() << "View Coords:" << newViewCenter;
+    //qDebug() << "View Coords:" << newViewCenter;
 }
 
 void MainWindow::onReceivedParticles(const QVector<ParticleInfo> &particles)
@@ -362,14 +362,10 @@ void MainWindow::onRemovedClient(int clientId)
 }
 
 void MainWindow::onAssignedId(int id) {
-    // Calculate the center position of the transformed view
-    qreal centerX = ui->graphicsView->width()/ 2.0;
-    qreal centerY = ui->graphicsView->height() / 2.0;
-
     // set up this client's sprite and listeners
     // Create and add the sprite at the center position
-    sprite = new Sprite(centerX, centerY, 1, 1, id); // Assuming the sprite constructor takes x, y, width, height
-    adjustViewToSprite(QPointF(centerX, centerY), 0, 0);
+    sprite = new Sprite(640, 360, 1, 1, id); // Assuming the sprite constructor takes x, y, width, height
+    adjustViewToSprite(QPointF(640, 360), 0, 0);
     scene->addItem(sprite);
 
     // Connect sprite movement signal to a slot that adjusts the view
