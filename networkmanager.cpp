@@ -99,29 +99,26 @@ void NetworkManager::parseMessage(const QByteArray &data)
         if (command == "C") {
             QVector<QPair<int, QPointF>> sprites;
 
-            for (const QString &spriteStr : payload) {
-                QStringList spriteValues = spriteStr.split(',');
-                if (spriteValues.size() == 3) {
-                    int id = spriteValues[0].toInt();
-                    qreal x = spriteValues[1].toDouble();
-                    qreal y = spriteValues[2].toDouble();
+            QStringList spriteValues = payload.split(',');
+            if (spriteValues.size() == 3) {
+                int id = spriteValues[0].toInt();
+                qreal x = spriteValues[1].toDouble();
+                qreal y = spriteValues[2].toDouble();
 
-                    bool spriteExists = false;
-                    for (auto& sprite : this->sprites) {
-                        if (sprite->getClientId() == id) {
-                            sprite->setPosWithRepaint(x, y);
-                            spriteExists = true;
-                            break;
-                        }
-                    }
-                    qDebug() << "Sprite exists?: " << spriteExists;
-                    if (!spriteExists) {
-                        sprites.append(qMakePair(id, QPointF(x, y)));
-                        emit receivedSprites(sprites);
+                bool spriteExists = false;
+                for (auto& sprite : this->sprites) {
+                    if (sprite->getClientId() == id) {
+                        sprite->setPosWithRepaint(x, y);
+                        spriteExists = true;
+                        break;
                     }
                 }
+                qDebug() << "Sprite exists?: " << spriteExists;
+                if (!spriteExists) {
+                    sprites.append(qMakePair(id, QPointF(x, y)));
+                    emit receivedSprites(sprites);
+                }
             }
-
         } else if (command == "P") {
             qDebug() << "From Server Particle/s: " << payload;
             // Parse particle positions
