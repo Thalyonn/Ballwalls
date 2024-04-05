@@ -105,19 +105,10 @@ void NetworkManager::parseMessage(const QByteArray &data)
                 qreal x = spriteValues[1].toDouble();
                 qreal y = spriteValues[2].toDouble();
 
-                bool spriteExists = false;
-                for (auto& sprite : this->sprites) {
-                    if (sprite->getClientId() == id) {
-                        sprite->setPosWithRepaint(x, y);
-                        spriteExists = true;
-                        break;
-                    }
-                }
-                qDebug() << "Sprite exists?: " << spriteExists;
-                if (!spriteExists) {
-                    sprites.append(qMakePair(id, QPointF(x, y)));
-                    emit receivedSprites(sprites);
-                }
+
+                sprites.append(qMakePair(id, QPointF(x, y)));
+                emit receivedSprites(sprites);
+
             }
         } else if (command == "P") {
             qDebug() << "From Server Particle/s: " << payload;

@@ -80,7 +80,6 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(rightWall);
 
     // Set the initial zoom level
-    setZoomLevel(37.0); // 1.0 represents no zoom (100%) 37.0 represents client zoom
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
     networkManager = new NetworkManager(this, sprites);
@@ -324,6 +323,14 @@ void MainWindow::onReceivedSprites(const QVector<QPair<int, QPointF>> &sprites)
 
     // 2. Add sprite/s to the list.
     for (const QPair<int, QPointF> &sprite : sprites) {
+        for (int i = 0; i < this->sprites.size(); ++i) {
+            if (this->sprites[i]->getClientId() == sprite.first) {
+                scene->removeItem(this->sprites[i]);
+                delete this->sprites[i];
+                this->sprites.removeAt(i);
+                break;
+            }
+        }
         Sprite *spriteItem = new Sprite(sprite.second.x(), sprite.second.y(), 1, 1, sprite.first);
         this->sprites.append(spriteItem);
         scene->addItem(spriteItem);
