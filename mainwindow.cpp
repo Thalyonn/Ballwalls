@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(rightWall);
 
     // Set the initial zoom level
+    setZoomLevel(37.0); // 1.0 represents no zoom (100%) 37.0 represents client zoom
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
     networkManager = new NetworkManager(this, sprites);
