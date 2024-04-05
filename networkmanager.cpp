@@ -82,53 +82,53 @@ void NetworkManager::sendMovement(const QPointF &position)
 
 void NetworkManager::parseMessage(const QByteArray &data)
 {
-    QString message = QString::fromUtf8(data);
-    QStringList parts = message.split(':');
+    QString load = QString::fromUtf8(data);
+    QVector<QString> messages = load.split(';');
 
-    qDebug() << "From Server: " << message;
+    for (QString message : messages) {
+        QStringList parts = message.split(':');
 
-    if (parts.size() < 2)
-        return;
+        if (parts.size() < 2)
+            return;
 
-    QString command = parts[0];
-    QString payload = parts[1];
+        qDebug() << "From Server: " << message;
 
-    if (command == "C") {
-        QVector<QPair<int, QPointF>> sprites;
-        QStringList spriteData = payload.split(';');
+        QString command = parts[0];
+        QString payload = parts[1];
 
-        for (const QString &spriteStr : spriteData) {
-            QStringList spriteValues = spriteStr.split(',');
-            if (spriteValues.size() == 3) {
-                int id = spriteValues[0].toInt();
-                qreal x = spriteValues[1].toDouble();
-                qreal y = spriteValues[2].toDouble();
+        if (command == "C") {
+            QVector<QPair<int, QPointF>> sprites;
 
-                bool spriteExists = false;
-                for (auto& sprite : this->sprites) {
-                    if (sprite->getClientId() == id) {
-                        sprite->setPosWithRepaint(x, y);
-                        spriteExists = true;
-                        break;
+            for (const QString &spriteStr : payload) {
+                QStringList spriteValues = spriteStr.split(',');
+                if (spriteValues.size() == 3) {
+                    int id = spriteValues[0].toInt();
+                    qreal x = spriteValues[1].toDouble();
+                    qreal y = spriteValues[2].toDouble();
+
+                    bool spriteExists = false;
+                    for (auto& sprite : this->sprites) {
+                        if (sprite->getClientId() == id) {
+                            sprite->setPosWithRepaint(x, y);
+                            spriteExists = true;
+                            break;
+                        }
+                    }
+                    qDebug() << "Sprite exists?: " << spriteExists;
+                    if (!spriteExists) {
+                        sprites.append(qMakePair(id, QPointF(x, y)));
+                        emit receivedSprites(sprites);
                     }
                 }
-                qDebug() << "Sprite exists?: " << spriteExists;
-                if (!spriteExists) {
-                    sprites.append(qMakePair(id, QPointF(x, y)));
-                    emit receivedSprites(sprites);
-                }
             }
-        }
 
-    } else if (command == "P") {
-        qDebug() << "From Server Particle/s: " << payload;
-        // Parse particle positions
-        QVector<ParticleInfo> particles;
-        QStringList particleData = payload.split(';');
+        } else if (command == "P") {
+            qDebug() << "From Server Particle/s: " << payload;
+            // Parse particle positions
+            QVector<ParticleInfo> particles;
 
-        for (const QString &particleStr : particleData) {
-            qDebug() << "Particle N: " << particleStr;
-            QStringList particleValues = particleStr.split(',');
+            qDebug() << "Particle N: " << payload;
+            QStringList particleValues = payload.split(',');
             if (particleValues.size() == 5) {
                 int id = particleValues[0].toInt();
                 qreal x = particleValues[1].toDouble();
@@ -137,28 +137,17 @@ void NetworkManager::parseMessage(const QByteArray &data)
                 qreal angle = particleValues[4].toDouble();
                 particles.append(ParticleInfo(id, x, y, velocity, angle));
             }
-        }
 
-        QString result;
-        for (const ParticleInfo& particle : particles) {
-            result += QString("ID: %1, Position: (%2, %3), Velocity: %4, Angle: %5")
-                          .arg(particle.id)
-                          .arg(particle.position.x())
-                          .arg(particle.position.y())
-                          .arg(particle.velocity)
-                          .arg(particle.angle);
+            emit receivedParticles(particles);
+        } else if (command == "DISCONNECTED_CLIENT") {
+            // Remove the disconnected client's sprite
+            int clientId = payload.toInt();
+            emit removedClient(clientId);
+        } else if (command == "ID") {
+            // This is the client's assigned ID
+            int id = payload.toInt();
+            emit assignedId(id);
         }
-        qDebug() << "Particle Received. Emitting:" << result;
-
-        emit receivedParticles(particles);
-    } else if (command == "DISCONNECTED_CLIENT") {
-        // Remove the disconnected client's sprite
-        int clientId = payload.toInt();
-        emit removedClient(clientId);
-    } else if (command == "ID") {
-        // This is the client's assigned ID
-        int id = payload.toInt();
-        emit assignedId(id);
     }
 }
 
