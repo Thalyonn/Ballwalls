@@ -72,7 +72,7 @@ void Sprite::handleKeyPress(QKeyEvent *event)
 void Sprite::moveBy(qreal dx, qreal dy) {
     m_x += dx;
     m_y += dy;
-    QGraphicsItem::moveBy(dx, dy); // Or however you are moving the sprite
+    //QGraphicsItem::moveBy(dx, dy); // if this line is here, then centering works. but if not client views are inconsistent.
     emit positionChanged(this->pos(), dx, dy);
 }
 
