@@ -27,15 +27,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_ballAddBtn_clicked();
-    void on_wallAddBtn_clicked();
     void updateFPS();
-
-    void on_b1_addBtn_clicked();
-
-    void on_b2_addBtn_clicked();
-
-    void on_b3_addBtn_clicked();
 
     void addBall(qreal x, qreal y, qreal dir, qreal angle);
     void manageWorkers();
