@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(rightWall);
 
     // Set the initial zoom level
+    setZoomLevel(37.0);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
     networkManager = new NetworkManager(this, sprites);
