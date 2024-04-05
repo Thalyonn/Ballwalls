@@ -72,7 +72,6 @@ void Sprite::handleKeyPress(QKeyEvent *event)
 void Sprite::moveBy(qreal dx, qreal dy) {
     m_x += dx;
     m_y += dy;
-    QGraphicsItem::moveBy(dx, dy); // Or however you are moving the sprite
     emit positionChanged(this->pos(), dx, dy);
 }
 
