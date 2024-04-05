@@ -1,4 +1,5 @@
-![image](https://github.com/Thalyonn/Ballwalls/assets/91253896/721070ed-ebc6-441c-b767-e4eca12a39e0)# Problem Set 3
+![image](https://github.com/Thalyonn/Ballwalls/assets/91253896/721070ed-ebc6-441c-b767-e4eca12a39e0)
+# Problem Set 3
 Daniel Capinpin, Dale Gregorio, Andrei Chua, Audric Ang
 
 To compile, use and download [QT Creator community edition](https://www.qt.io/download-open-source).
