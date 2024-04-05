@@ -73,7 +73,7 @@ void Sprite::moveBy(qreal dx, qreal dy) {
     m_x += dx;
     m_y += dy;
     QGraphicsItem::moveBy(dx, dy); // if this line is here, then centering works, but the client views will be inconsistent.
-    emit positionChanged(this->pos(), dx, dy);
+    emit positionChanged(QPointF(m_x, m_y), dx, dy);
 }
 
 // void Sprite::setPos(qreal x, qreal y)
