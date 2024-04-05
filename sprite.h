@@ -17,7 +17,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QPainterPath shape() const override;
 
-    void setPos(qreal x, qreal y);
+    //void setPos(qreal x, qreal y);
     void setPosWithRepaint(qreal x, qreal y);
     QPointF pos() const;
 
@@ -31,6 +31,8 @@ public:
     void moveBy(qreal dx, qreal dy);
 
     int getClientId() const;
+
+    void render();
 
 signals:
     void spriteMoved(qreal deltaX, qreal deltaY);

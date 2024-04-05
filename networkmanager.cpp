@@ -76,6 +76,7 @@ void NetworkManager::sendMovement(const QPointF &position)
 {
     //QByteArray data = QString("MOVE:%1,%2").arg(position.x()).arg(std::abs(360 - position.y())).toUtf8();
     QByteArray data = QString("MOVE:%1,%2").arg(position.x()).arg(position.y()).toUtf8();
+    qDebug() << "Sending Position to Server: " << position.x() << ", " << position.y();
     sendMessage(data);
 }
 
@@ -84,7 +85,7 @@ void NetworkManager::parseMessage(const QByteArray &data)
     QString message = QString::fromUtf8(data);
     QStringList parts = message.split(':');
 
-    //qDebug() << "From Server: " << message;
+    qDebug() << "From Server: " << message;
 
     if (parts.size() < 2)
         return;
@@ -108,7 +109,6 @@ void NetworkManager::parseMessage(const QByteArray &data)
                     if (sprite->getClientId() == id) {
                         sprite->setPosWithRepaint(x, y);
                         spriteExists = true;
-                        sprite->update();
                         break;
                     }
                 }

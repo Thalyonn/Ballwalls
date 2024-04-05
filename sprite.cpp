@@ -76,14 +76,18 @@ void Sprite::moveBy(qreal dx, qreal dy) {
     emit positionChanged(this->pos(), dx, dy);
 }
 
-void Sprite::setPos(qreal x, qreal y)
-{
-    if (m_x != x || m_y != y) {
-        m_x = x;
-        m_y = y;
-        setTransformOriginPoint(m_width / 2, m_height / 2); // Set the origin point for correct rotation
-        QGraphicsItem::setPos(x, y);
-    }
+// void Sprite::setPos(qreal x, qreal y)
+// {
+//     if (m_x != x || m_y != y) {
+//         m_x = x;
+//         m_y = y;
+//         setTransformOriginPoint(m_width / 2, m_height / 2); // Set the origin point for correct rotation
+//         QGraphicsItem::setPos(x, y);
+//     }
+// }
+
+void Sprite::render() {
+    setPos(m_x, m_y);
 }
 
 void Sprite::setPosWithRepaint(qreal x, qreal y)

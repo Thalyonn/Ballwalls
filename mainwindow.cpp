@@ -104,7 +104,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Tell the server this sprite moved
     connect(sprite, &Sprite::positionChanged, this, &MainWindow::onSpritePositionChanged);
 
-    scene->addItem(sprite);
     ui->graphicsView->installEventFilter(this);
 
     //Create workers
@@ -160,6 +159,9 @@ void MainWindow::manageWorkers()
 void MainWindow::manageRenderThread() {
     for (Ball *ball : balls) {
         ball->render();
+    }
+    for (Sprite *sprite : sprites) {
+        sprite->render();
     }
 }
 
